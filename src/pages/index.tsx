@@ -1,5 +1,8 @@
+import { Bench } from "@/components/Bench";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const DynamicInfiniteCanvas = dynamic(
   () => import("@/components/InfiniteCanvas"),
@@ -17,7 +20,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <DynamicInfiniteCanvas />
+      <div className="flex w-full h-full">
+        <DndProvider backend={HTML5Backend}>
+          <DynamicInfiniteCanvas />
+          {/* <div className="h-full bg-white w-96"></div> */}
+          <Bench />
+        </DndProvider>
+      </div>
     </>
   );
 }

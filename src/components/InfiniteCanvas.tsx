@@ -43,7 +43,7 @@ const InfiniteCanvas = () => {
       onWheel={handleWheel}
       onPointerMove={handlePointer}
     >
-      <ScaledContainer key={frame} />
+      <ScaledContainer frame={frame} />
     </div>
   );
 };
