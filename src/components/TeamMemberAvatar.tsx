@@ -5,5 +5,7 @@ type Props = {
 export const TEAM_MEMBER_AVATAR = "team_member_avatar";
 
 export const TeamMemberAvatar = ({ id }: Props) => {
-  return <div className="w-16 bg-red-300 rounded-full aspect-square" />;
+  return (
+    <div className="relative w-16 rounded-full bg-dam-red-100 aspect-square"></div>
+  );
 };

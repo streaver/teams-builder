@@ -38,7 +38,7 @@ const InfiniteCanvas = () => {
 
   return (
     <div
-      className="relative w-full h-full overflow-hidden bg-purple-200 border-2 border-purple-400 border-dashed overscroll-none"
+      className="relative w-full h-full overflow-hidden border-2 border-dashed bg-dam-blue-100 border-dam-blue-400 overscroll-none"
       ref={canvas}
       onWheel={handleWheel}
       onPointerMove={handlePointer}
