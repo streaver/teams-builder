@@ -1,7 +1,8 @@
+import { Bench } from "@/components/Bench";
+import { AuthModal } from "@/components/sign-in/AuthModal";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import React, { useState } from "react";
-import { AuthModal } from "@/components/sign-in/AuthModal";
+import { useState } from "react";
 
 const DynamicInfiniteCanvas = dynamic(
   () => import("@/components/InfiniteCanvas"),
@@ -15,7 +16,6 @@ export default function Home() {
 
   return (
     <>
-      {" "}
       <AuthModal setShowModal={setShowModal} />
       {!showModal ? (
         <>
@@ -30,6 +30,8 @@ export default function Home() {
           </Head>
           <div className="flex w-full h-full">
             <DynamicInfiniteCanvas />
+            <div className="w-1/5 shrink-0" />
+            <Bench />
           </div>
         </>
       ) : null}
