@@ -17,7 +17,7 @@ export const TeamMemberAvatar = ({ id }: Props) => {
       height={64}
       alt={`${teamMember.firstName} ${teamMember.lastName}`}
       src={teamMember.picture}
-      className="rounded-full"
+      className="rounded-full hover:opacity-60 hover:ring-2 ring-dam-gray-600"
     />
   );
 };
