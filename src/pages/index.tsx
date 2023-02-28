@@ -24,8 +24,9 @@ export default function Home({ teamsJson, teamMembersJson }: Props) {
 
   return (
     <>
-      <AuthModal setShowModal={setShowModal} />
-      {!showModal ? (
+      {showModal ? (
+        <AuthModal setShowModal={setShowModal} />
+      ) : (
         <>
           <Head>
             <title>Create Next App</title>
@@ -47,7 +48,7 @@ export default function Home({ teamsJson, teamMembersJson }: Props) {
             </div>
           </RecoilProvider>
         </>
-      ) : null}
+      )}
     </>
   );
 }
