@@ -29,8 +29,8 @@ export const RecoilProvider = ({
     set(teamMemberIdsAtom, teamMemberIds);
 
     // For each team member, initialize its data.
-    teamMembers.forEach(({ id, teamId }) => {
-      set(teamMemberAtomFamily(id), { id, teamId });
+    teamMembers.forEach((teamMember) => {
+      set(teamMemberAtomFamily(teamMember.id), teamMember);
     });
 
     // For each team, set its original position in the canvas

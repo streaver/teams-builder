@@ -5,5 +5,8 @@ export type Team = {
 
 export type TeamMember = {
   id: number;
+  firstName: string;
+  lastName: string;
+  picture: string;
   teamId: Team["id"] | null; // null means benched
 };
