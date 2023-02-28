@@ -12,12 +12,12 @@ export const TeamMemberAvatar = ({ id }: Props) => {
   const teamMember = useRecoilValue(teamMemberAtomFamily(id));
 
   return (
-    <div className="relative w-16 rounded-full aspect-square">
-      <Image
-        fill
-        alt={`${teamMember.firstName} ${teamMember.lastName}`}
-        src={teamMember.picture}
-      />
-    </div>
+    <Image
+      width={64}
+      height={64}
+      alt={`${teamMember.firstName} ${teamMember.lastName}`}
+      src={teamMember.picture}
+      className="rounded-full"
+    />
   );
 };
