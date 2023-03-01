@@ -32,7 +32,6 @@ yarn-error.log*
 # sensible json files
 team-members.json
 teams.json
-public/images/members
 
 # vercel
 .vercel
