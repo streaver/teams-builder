@@ -27,6 +27,12 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+
+# sensible json files
+team-members.json
+teams.json
+public/images/members
 
 # vercel
 .vercel
