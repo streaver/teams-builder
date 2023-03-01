@@ -14,19 +14,21 @@ import {
   TEAM_GAP,
   TEAM_PADDING,
 } from "@/utils/constants";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { MutableSnapshot, RecoilRoot } from "recoil";
 
-type Props = {
-  teams: Team[];
-  teamMembers: TeamMember[];
-};
+export const RecoilProvider = ({ children }: PropsWithChildren) => {
+  const [teams, setTeams] = useState<Team[] | null>(null);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[] | null>(null);
 
-export const RecoilProvider = ({
-  teams,
-  teamMembers,
-  children,
-}: PropsWithChildren<Props>) => {
+  useEffect(() => {
+    const teamJson = localStorage.getItem("teams");
+    const teamMembersJson = localStorage.getItem("team-members");
+
+    setTeams(teamJson ? JSON.parse(teamJson) : []);
+    setTeamMembers(teamMembersJson ? JSON.parse(teamMembersJson) : []);
+  }, []);
+
   const setInitialState = ({ set }: MutableSnapshot) => {
     if (!teams || !teamMembers) return;
 
@@ -117,5 +119,7 @@ export const RecoilProvider = ({
     });
   };
 
-  return <RecoilRoot initializeState={setInitialState}>{children}</RecoilRoot>;
+  return teams !== null && teamMembers !== null ? (
+    <RecoilRoot initializeState={setInitialState}>{children}</RecoilRoot>
+  ) : null;
 };
