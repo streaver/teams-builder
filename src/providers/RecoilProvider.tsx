@@ -1,3 +1,4 @@
+import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
 import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
 import { teamIdsAtom } from "@/state/recoil/atoms/teamIdsAtom";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
@@ -32,15 +33,20 @@ export const RecoilProvider = ({
     const teamIds = teams.map((team) => team.id);
     const teamMemberIds = teamMembers.map((teamMember) => teamMember.id);
 
-    // Initialize the team ids
+    // Initialize the teamIds atom
     set(teamIdsAtom, teamIds);
 
-    // Initialize the team member ids
+    // Initialize the memberIds atom
     set(teamMemberIdsAtom, teamMemberIds);
 
-    // For each team member, initialize its data.
+    // Initilize the teamMembers atoms
     teamMembers.forEach((teamMember) => {
       set(teamMemberAtomFamily(teamMember.id), teamMember);
+    });
+
+    // Initilize the team atoms
+    teams.forEach((team) => {
+      set(teamAtomFamily(team.id), team);
     });
 
     const boxesSettings: Record<Team["id"], TeamBoxSettings> = {};
@@ -100,7 +106,7 @@ export const RecoilProvider = ({
         height,
       };
 
-      // Initialize each box settings
+      // Initialize the teamBox atoms
       set(teamBoxAtomFamily(id), (currentData) => ({
         ...currentData,
         width,

@@ -14,4 +14,4 @@ export const TEAM_GAP = 8;
 
 // 3x3 grid
 export const GRID_COLS = 3;
-export const GRID_GAP = 32;
+export const GRID_GAP = 64;
