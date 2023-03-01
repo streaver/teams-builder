@@ -11,13 +11,19 @@ export const TEAM_MEMBER_AVATAR = "team_member_avatar";
 export const TeamMemberAvatar = ({ id }: Props) => {
   const teamMember = useRecoilValue(teamMemberAtomFamily(id));
 
+  const shortName = `${teamMember.firstName} ${teamMember.lastName[0]}.`;
+
   return (
-    <Image
-      width={64}
-      height={64}
-      alt={`${teamMember.firstName} ${teamMember.lastName}`}
-      src={teamMember.picture}
-      className="rounded-full"
-    />
+    <div className="relative w-16 h-16 overflow-hidden bg-white rounded-full group">
+      <Image
+        fill
+        alt={`${teamMember.firstName} ${teamMember.lastName}`}
+        src={teamMember.picture}
+        className="object-contain rounded-full group-hover:opacity-60 hover:ring-2 ring-dam-gray-600"
+      />
+      <p className="absolute hidden w-full text-xs text-center truncate -translate-x-1/2 -translate-y-1/2 text-dam-gray-600 left-1/2 top-1/2 group-hover:block ">
+        {shortName}
+      </p>
+    </div>
   );
 };
