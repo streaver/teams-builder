@@ -9,10 +9,13 @@ export type LoginRequestBody = {
 
 export const SignInModal = () => {
   const [hasPasswordsError, setHasPasswordError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setIsSubmitting(true);
 
     const formData = new FormData(e.target as HTMLFormElement);
     const credentials = Object.fromEntries(formData) as LoginRequestBody;
@@ -33,6 +36,8 @@ export const SignInModal = () => {
       toast.error(
         "Oops, something went wrong. Please check your internet connection and try again"
       );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -64,8 +69,9 @@ export const SignInModal = () => {
           </span>
         )}
         <button
+          disabled={isSubmitting}
           type="submit"
-          className="w-full py-2 text-white bg-dam-blue-400 rounded-xl hover:bg-dam-blue-600"
+          className="w-full py-2 text-white bg-dam-blue-400 rounded-xl enabled:hover:bg-blue-600 disabled:bg-opacity-30"
         >
           Submit
         </button>
