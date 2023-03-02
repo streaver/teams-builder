@@ -40,7 +40,7 @@ export const SignInModal = () => {
     <div className="fixed inset-0 flex items-center justify-center bg-dam-blue-100">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center w-1/4 gap-4 px-4 py-8 bg-white rounded-3xl"
+        className="flex flex-col items-center w-full max-w-xs gap-4 px-4 py-8 text-sm bg-white shadow-lg sm:max-w-sm rounded-xl"
       >
         <div className="flex items-center gap-2">
           <Image
@@ -52,7 +52,7 @@ export const SignInModal = () => {
           <span>Dam</span>
         </div>
         <input
-          className="w-full px-4 py-2 border rounded-lg text-dam-gray-500 focus:outline-dam-blue-600 bg-dam-gray-50 "
+          className="w-full px-4 py-2 border rounded-lg text-dam-gray-500 focus:outline-dam-blue-400 bg-dam-gray-50"
           placeholder="Password"
           type="password"
           name="password"
