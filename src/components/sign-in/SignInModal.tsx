@@ -34,7 +34,7 @@ export const SignInModal = () => {
       router.push("/");
     } catch (e) {
       toast.error(
-        "Oops, something went wrong. Please check your internet connection and try again"
+        "Oops, something went wrong. Please check your internet connection and try again."
       );
     } finally {
       setIsSubmitting(false);
