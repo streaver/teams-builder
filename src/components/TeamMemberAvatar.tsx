@@ -1,6 +1,7 @@
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
+import { useDrag } from "react-dnd";
 
 type Props = {
   id: number;
@@ -13,8 +14,16 @@ export const TeamMemberAvatar = ({ id }: Props) => {
 
   const shortName = `${teamMember.firstName} ${teamMember.lastName[0]}.`;
 
+  const [_, dragRef] = useDrag(() => ({
+    type: TEAM_MEMBER_AVATAR,
+    item: { id },
+  }));
+
   return (
-    <div className="relative w-16 h-16 overflow-hidden bg-white rounded-full group">
+    <div
+      ref={dragRef}
+      className="relative w-16 h-16 overflow-hidden bg-white rounded-full group"
+    >
       <Image
         fill
         alt={`${teamMember.firstName} ${teamMember.lastName}`}
