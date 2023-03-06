@@ -1,9 +1,8 @@
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
-import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
 import { Team, TeamMember } from "@/types/Team";
 import { PropsWithChildren } from "react";
 import { useDrop } from "react-dnd";
-import { useRecoilCallback, useRecoilState } from "recoil";
+import { useRecoilCallback } from "recoil";
 import { TEAM_MEMBER_AVATAR } from "./TeamMemberAvatar";
 
 type Props = {
@@ -19,7 +18,7 @@ export const TeamBoxWrapper = ({ id, children }: PropsWithChildren<Props>) => {
           teamId: id,
         }));
       },
-    []
+    [id]
   );
 
   const [_, dropRef] = useDrop(() => ({
