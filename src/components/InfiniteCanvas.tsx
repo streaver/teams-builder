@@ -1,3 +1,4 @@
+import { useTeamDrop } from "@/hooks/team-dnd";
 import useSize from "@react-hook/size";
 import {
   PointerEvent,
@@ -6,6 +7,7 @@ import {
   useRef,
   WheelEvent,
 } from "react";
+import { mergeRefs } from "react-merge-refs";
 import useRenderLoop from "../core/RenderLoop";
 import CanvasStore from "../state/CanvasStore";
 import ScaledContainer from "./ScaledContainer";
@@ -18,6 +20,8 @@ const InfiniteCanvas = () => {
     if (width === 0 || height === 0) return;
     CanvasStore.initialize(width, height);
   }, [width, height]);
+
+  const [_, teamDropRef] = useTeamDrop();
 
   const handleWheel = useCallback((event: WheelEvent) => {
     const { deltaX, deltaY } = event;
@@ -39,7 +43,7 @@ const InfiniteCanvas = () => {
   return (
     <div
       className="relative w-full h-full overflow-hidden border-2 border-dashed bg-dam-blue-100 border-dam-blue-400 overscroll-none"
-      ref={canvas}
+      ref={mergeRefs([canvas, teamDropRef])}
       onWheel={handleWheel}
       onPointerMove={handlePointer}
     >
