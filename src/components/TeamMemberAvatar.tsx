@@ -1,23 +1,18 @@
+import { useTeamMemberDrag } from "@/hooks/team-members-dnd";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
-import { useDrag } from "react-dnd";
 
 type Props = {
   id: number;
 };
-
-export const TEAM_MEMBER_AVATAR = "team_member_avatar";
 
 export const TeamMemberAvatar = ({ id }: Props) => {
   const teamMember = useRecoilValue(teamMemberAtomFamily(id));
 
   const shortName = `${teamMember.firstName} ${teamMember.lastName[0]}.`;
 
-  const [_, dragRef] = useDrag(() => ({
-    type: TEAM_MEMBER_AVATAR,
-    item: { id },
-  }));
+  const [_, dragRef] = useTeamMemberDrag(id);
 
   return (
     <div
