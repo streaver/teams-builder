@@ -4,6 +4,8 @@ import { RecoilProvider } from "@/providers/RecoilProvider";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 const DynamicInfiniteCanvas = dynamic(
   () => import("@/components/InfiniteCanvas"),
@@ -26,9 +28,11 @@ export default function Home() {
       </Head>
       <RecoilProvider>
         <div className="flex w-full h-full">
-          <DynamicInfiniteCanvas />
-          <div className="w-1/5 shrink-0" />
-          <Bench />
+          <DndProvider backend={HTML5Backend}>
+            <DynamicInfiniteCanvas />
+            <div className="w-1/5 shrink-0" />
+            <Bench />
+          </DndProvider>
         </div>
       </RecoilProvider>
     </>
