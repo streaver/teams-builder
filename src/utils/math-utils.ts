@@ -19,3 +19,13 @@ export const inBounds = (rect1: Rect, rect2: Rect) => {
     return true;
   else return false;
 };
+
+export const applyReverseScale = (
+  position: Pick<Rect, "x" | "y">,
+  scale: Pick<Rect, "x" | "y">
+) => {
+  return {
+    x: position.x / scale.x,
+    y: position.y / scale.y,
+  };
+};
