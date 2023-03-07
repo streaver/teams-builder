@@ -9,15 +9,22 @@ export const TEAM_BOX = "team_box";
 
 export type TeamBoxDndItem = {
   teamId: Team["id"];
+  screen: typeof CanvasStore.screen;
 };
 
 export const useTeamDrag = (teamId: Team["id"]) => {
-  return useDrag<TeamBoxDndItem>(() => ({
-    type: TEAM_BOX,
-    item: {
-      teamId,
-    },
-  }));
+  return useDrag<TeamBoxDndItem>(
+    () => ({
+      type: TEAM_BOX,
+      item: {
+        teamId,
+        // The camera might move during the drag operation.
+        // If that happens, the original position of the camera will be needed to compute the right position.
+        screen: CanvasStore.screen,
+      },
+    }),
+    [CanvasStore.screen]
+  );
 };
 
 export const useTeamDrop = () => {
@@ -39,16 +46,24 @@ export const useTeamDrop = () => {
     () => ({
       accept: TEAM_BOX,
       drop: (item, monitor) => {
-        const delta = monitor.getDifferenceFromInitialOffset();
+        let delta = monitor.getDifferenceFromInitialOffset();
         if (!delta) {
           return;
         }
 
-        // The position delta needs to be corrected using the canvas scale
+        const screen = CanvasStore.screen;
         const canvasScale = CanvasStore.scale;
-        const scaledDelta = applyReverseScale(delta, canvasScale);
 
-        handleTeamDrop(item.teamId, scaledDelta);
+        // The canvas might be scaled
+        // The delta needs to be corrected using the canva's scale
+        delta = applyReverseScale(delta, canvasScale);
+
+        // The camera might have been moved during the drag
+        // The delta needs to be corrected with the new screen's position
+        delta.x += screen.x - item.screen.x;
+        delta.y += screen.y - item.screen.y;
+
+        handleTeamDrop(item.teamId, delta);
       },
     }),
     []

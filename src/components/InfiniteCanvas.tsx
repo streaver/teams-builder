@@ -10,11 +10,12 @@ import {
 import { mergeRefs } from "react-merge-refs";
 import useRenderLoop from "../core/RenderLoop";
 import CanvasStore from "../state/CanvasStore";
+import { CanvasEdgesDropZone } from "./CanvasEdgesDropZone";
 import ScaledContainer from "./ScaledContainer";
 
 const InfiniteCanvas = () => {
-  const canvas = useRef<HTMLDivElement>(null);
-  const [width, height] = useSize(canvas);
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [width, height] = useSize(canvasRef);
 
   useEffect(() => {
     if (width === 0 || height === 0) return;
@@ -43,10 +44,11 @@ const InfiniteCanvas = () => {
   return (
     <div
       className="relative w-full h-full overflow-hidden border-2 border-dashed bg-dam-blue-100 border-dam-blue-400 overscroll-none"
-      ref={mergeRefs([canvas, teamDropRef])}
+      ref={mergeRefs([canvasRef, teamDropRef])}
       onWheel={handleWheel}
       onPointerMove={handlePointer}
     >
+      <CanvasEdgesDropZone />
       <ScaledContainer frame={frame} />
     </div>
   );
