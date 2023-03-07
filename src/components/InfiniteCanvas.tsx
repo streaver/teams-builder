@@ -1,4 +1,9 @@
+import { CanvasEdgesDropZone } from "@/components/CanvasEdgesDropZone";
+import { CustomDragLayer } from "@/components/CustomDragLayer";
+import ScaledContainer from "@/components/ScaledContainer";
+import useRenderLoop from "@/core/RenderLoop";
 import { useTeamDrop } from "@/hooks/team-dnd";
+import CanvasStore from "@/state/CanvasStore";
 import useSize from "@react-hook/size";
 import {
   PointerEvent,
@@ -8,10 +13,6 @@ import {
   WheelEvent,
 } from "react";
 import { mergeRefs } from "react-merge-refs";
-import useRenderLoop from "../core/RenderLoop";
-import CanvasStore from "../state/CanvasStore";
-import { CanvasEdgesDropZone } from "./CanvasEdgesDropZone";
-import ScaledContainer from "./ScaledContainer";
 
 const InfiniteCanvas = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -49,6 +50,7 @@ const InfiniteCanvas = () => {
       onPointerMove={handlePointer}
     >
       <CanvasEdgesDropZone />
+      <CustomDragLayer />
       <ScaledContainer frame={frame} />
     </div>
   );
