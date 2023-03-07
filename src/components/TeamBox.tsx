@@ -2,7 +2,7 @@ import { useTeamDrag } from "@/hooks/team-dnd";
 import CanvasStore from "@/state/CanvasStore";
 import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
 import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
-import { teamMemberIdsSelectorFamily } from "@/state/recoil/selectors/teamMemberIdsSelectorFamily";
+import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { TEAM_PADDING } from "@/utils/constants";
 import { inBounds } from "@/utils/math-utils";
 import { useRecoilValue } from "recoil";
@@ -16,8 +16,7 @@ type Props = {
 export const TeamBox = ({ id }: Props) => {
   const teamBox = useRecoilValue(teamBoxAtomFamily(id));
   const team = useRecoilValue(teamAtomFamily(id));
-
-  const teamMemberIds = useRecoilValue(teamMemberIdsSelectorFamily(id));
+  const teamMembers = useRecoilValue(teamMembersSelectorFamily(id));
 
   const screen = CanvasStore.screen;
   const isInScreen = inBounds(teamBox, screen);
@@ -40,8 +39,12 @@ export const TeamBox = ({ id }: Props) => {
           className="relative flex flex-wrap h-full gap-2"
           style={{ padding: TEAM_PADDING }}
         >
-          {teamMemberIds.map((teamMemberId) => (
-            <TeamMemberBox key={teamMemberId} id={teamMemberId} />
+          {teamMembers.map((member) => (
+            <TeamMemberBox
+              key={member.id}
+              id={member.id}
+              hours={member.hours}
+            />
           ))}
         </div>
         <span className="absolute -translate-x-1/2 left-1/2 -bottom-8">

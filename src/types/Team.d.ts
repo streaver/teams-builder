@@ -9,4 +9,5 @@ export type TeamMember = {
   lastName: string;
   picture: string;
   teamId: Team["id"] | null; // null means benched
+  hours: number;
 };
