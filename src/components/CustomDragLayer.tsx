@@ -1,6 +1,6 @@
 import { TeamBoxDragPreview } from "@/components/team-box/TeamBoxDragPreview";
 import { TeamMemberAvatarDragPreview } from "@/components/team-member/avatar/TeamMemberAvatarDragPreview";
-import { TeamBoxDndItem, TEAM_BOX } from "@/hooks/team-dnd";
+import { TeamBoxDndItem } from "@/hooks/team-dnd";
 import { TeamMemberDndItem } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
 import { DraggableItemType } from "@/utils/dnd";
@@ -11,7 +11,7 @@ export const CustomDragLayer = () => {
   const { itemType, isDragging, item, initialPosition, delta } = useDragLayer(
     (monitor) => ({
       item: monitor.getItem(),
-      itemType: monitor.getItemType(),
+      itemType: monitor.getItemType() as DraggableItemType,
       initialPosition: monitor.getInitialSourceClientOffset(),
       delta: monitor.getDifferenceFromInitialOffset(),
       isDragging: monitor.isDragging(),
@@ -24,7 +24,7 @@ export const CustomDragLayer = () => {
 
   const renderItem = () => {
     switch (itemType) {
-      case TEAM_BOX:
+      case DraggableItemType.TEAM_BOX:
         const teamId = (item as TeamBoxDndItem).teamId;
         return <TeamBoxDragPreview id={teamId} />;
 

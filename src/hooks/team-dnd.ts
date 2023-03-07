@@ -1,11 +1,10 @@
 import CanvasStore from "@/state/CanvasStore";
 import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
 import { Team } from "@/types/Team";
+import { DraggableItemType } from "@/utils/dnd";
 import { applyReverseScale } from "@/utils/math-utils";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { useRecoilCallback } from "recoil";
-
-export const TEAM_BOX = "team_box";
 
 export type TeamBoxDndItem = {
   teamId: Team["id"];
@@ -19,7 +18,7 @@ export type TeamBoxDndCollectedProps = {
 export const useTeamDrag = (teamId: Team["id"]) => {
   return useDrag<TeamBoxDndItem, unknown, TeamBoxDndCollectedProps>(
     () => ({
-      type: TEAM_BOX,
+      type: DraggableItemType.TEAM_BOX,
       item: {
         teamId,
         // The camera might move during the drag operation.
@@ -51,7 +50,7 @@ export const useTeamDrop = () => {
 
   return useDrop<TeamBoxDndItem>(
     () => ({
-      accept: TEAM_BOX,
+      accept: DraggableItemType.TEAM_BOX,
       drop: (item, monitor) => {
         let delta = monitor.getDifferenceFromInitialOffset();
         if (!delta) {
