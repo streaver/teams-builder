@@ -1,9 +1,16 @@
 import { TeamBoxDndItem, TEAM_BOX } from "@/hooks/team-dnd";
-import classNames from "classnames";
-import { CSSProperties, PropsWithChildren, useEffect, useState } from "react";
+import CanvasStore from "@/state/CanvasStore";
+import {
+  CSSProperties,
+  PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDrop } from "react-dnd";
 
-const EDGE_SIZE_IN_PIXELS = 80;
+const CAMERA_STEP_ON_DRAG = 5;
+const EDGE_SIZE_IN_PIXELS = 40;
 
 type Edge =
   | "top"
@@ -83,6 +90,7 @@ export const EdgeDropZone = ({
   >(
     () => ({
       accept: TEAM_BOX,
+      canDrop: () => false, // By making canDrop return false we make sure the drop event will propagate upwards (to the canvas)
       collect: (monitor) => ({
         isOver: monitor.isOver(),
       }),
@@ -97,7 +105,7 @@ export const EdgeDropZone = ({
   return (
     <div
       ref={dropRef}
-      className={classNames("absolute z-50")}
+      className={"absolute z-50"}
       style={EDGE_DROP_ZONE_STYLES[edge]}
     >
       {children}
@@ -114,6 +122,61 @@ export const CanvasEdgesDropZone = () => {
   const [isOverBottomLeft, setIsOverBottomLeft] = useState(false);
   const [isOverLeft, setIsOverLeft] = useState(false);
   const [isOverTopLeft, setIsOverTopLeft] = useState(false);
+
+  const animationFrameRef = useRef<number>();
+
+  useEffect(() => {
+    if (
+      !isOverTop &&
+      !isOverTopRigh &&
+      !isOverRight &&
+      !isOverBottomRigh &&
+      !isOverBottom &&
+      !isOverBottomLeft &&
+      !isOverLeft &&
+      !isOverTopLeft
+    ) {
+      return;
+    }
+
+    const isTop = isOverTop || isOverTopRigh || isOverTopLeft;
+    const isRight = isOverRight || isOverTopRigh || isOverBottomRigh;
+    const isBottom = isOverBottom || isOverBottomRigh || isOverBottomLeft;
+    const isLeft = isOverLeft || isOverBottomLeft || isOverTopLeft;
+
+    const xDelta = isRight
+      ? CAMERA_STEP_ON_DRAG
+      : isLeft
+      ? -CAMERA_STEP_ON_DRAG
+      : 0;
+    const yDelta = isBottom
+      ? CAMERA_STEP_ON_DRAG
+      : isTop
+      ? -CAMERA_STEP_ON_DRAG
+      : 0;
+
+    const moveCamera = () => {
+      CanvasStore.moveCamera(xDelta, yDelta);
+      animationFrameRef.current = window.requestAnimationFrame(moveCamera);
+    };
+
+    animationFrameRef.current = window.requestAnimationFrame(moveCamera);
+
+    return () => {
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [
+    isOverBottom,
+    isOverBottomLeft,
+    isOverBottomRigh,
+    isOverLeft,
+    isOverRight,
+    isOverTop,
+    isOverTopLeft,
+    isOverTopRigh,
+  ]);
 
   return (
     <>
