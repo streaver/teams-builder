@@ -1,14 +1,16 @@
+import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import { TeamMember } from "@/types/Team";
 import { MEMBER_BORDER, MEMBER_HEIGHT, MEMBER_WIDTH } from "@/utils/constants";
+import { useRecoilValue } from "recoil";
 import { TeamMemberAvatar } from "./TeamMemberAvatar";
 
 type Props = {
   id: TeamMember["id"];
-  hours: TeamMember["hours"];
 };
 
-export const TeamMemberBox = ({ id, hours }: Props) => {
-  const memberBoxHeight = (MEMBER_HEIGHT * hours) / 8;
+export const TeamMemberBox = ({ id }: Props) => {
+  const member = useRecoilValue(teamMemberAtomFamily(id));
+  const memberBoxHeight = (MEMBER_HEIGHT * member.hours) / 8;
 
   return (
     <div

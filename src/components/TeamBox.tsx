@@ -30,18 +30,18 @@ export const TeamBox = ({ id }: Props) => {
       (member1, member2) => member2.hours - member1.hours
     );
 
-    const leftCol: TeamMember[] = [];
-    const rightCol: TeamMember[] = [];
+    const leftCol: TeamMember["id"][] = [];
+    const rightCol: TeamMember["id"][] = [];
 
     let totalHoursLeftCol = 0;
     let totalHoursRightCol = 0;
 
     teamMembersSorted.forEach((member) => {
       if (totalHoursLeftCol <= totalHoursRightCol) {
-        leftCol.push(member);
+        leftCol.push(member.id);
         totalHoursLeftCol += member.hours;
       } else {
-        rightCol.push(member);
+        rightCol.push(member.id);
         totalHoursRightCol += member.hours;
       }
     });
@@ -67,21 +67,13 @@ export const TeamBox = ({ id }: Props) => {
         >
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-2">
-              {membersLeftCol.map((member) => (
-                <TeamMemberBox
-                  key={member.id}
-                  id={member.id}
-                  hours={member.hours}
-                />
+              {membersLeftCol.map((memberId) => (
+                <TeamMemberBox key={memberId} id={memberId} />
               ))}
             </div>
             <div className="flex flex-col gap-2">
-              {membersRightCol.map((member) => (
-                <TeamMemberBox
-                  key={member.id}
-                  id={member.id}
-                  hours={member.hours}
-                />
+              {membersRightCol.map((memberId) => (
+                <TeamMemberBox key={memberId} id={memberId} />
               ))}
             </div>
           </div>
