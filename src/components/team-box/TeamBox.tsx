@@ -40,15 +40,15 @@ export const TeamBox = ({ id }: Props) => {
 
   return (
     <div
-      className="relative grid grid-cols-2 gap-2"
+      className="relative grid h-full grid-cols-2 gap-2"
       style={{ padding: TEAM_PADDING }}
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col h-full gap-2">
         {membersLeftCol.map((memberId) => (
           <TeamMemberBox key={memberId} id={memberId} />
         ))}
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col h-full gap-2">
         {membersRightCol.map((memberId) => (
           <TeamMemberBox key={memberId} id={memberId} />
         ))}
