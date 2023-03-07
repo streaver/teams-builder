@@ -23,7 +23,7 @@ export const useTeamDrag = (teamId: Team["id"]) => {
         screen: CanvasStore.screen,
       },
     }),
-    [CanvasStore.screen]
+    [teamId, CanvasStore.screen]
   );
 };
 
@@ -66,6 +66,6 @@ export const useTeamDrop = () => {
         handleTeamDrop(item.teamId, delta);
       },
     }),
-    []
+    [handleTeamDrop]
   );
 };
