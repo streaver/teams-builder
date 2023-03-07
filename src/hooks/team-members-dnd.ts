@@ -86,10 +86,13 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null) => {
     [teamId]
   );
 
-  return useDrop<TeamMemberDndItem>(() => ({
-    accept: TEAM_MEMBER_AVATAR,
-    drop: (item) => {
-      updateTeamMember(item.id);
-    },
-  }));
+  return useDrop<TeamMemberDndItem>(
+    () => ({
+      accept: TEAM_MEMBER_AVATAR,
+      drop: (item) => {
+        updateTeamMember(item.id);
+      },
+    }),
+    [updateTeamMember]
+  );
 };
