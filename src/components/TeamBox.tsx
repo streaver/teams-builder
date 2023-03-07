@@ -18,9 +18,7 @@ type Props = {
 export const TeamBox = ({ id }: Props) => {
   const teamBox = useRecoilValue(teamBoxAtomFamily(id));
   const team = useRecoilValue(teamAtomFamily(id));
-  const teamMembers = [...useRecoilValue(teamMembersSelectorFamily(id))].sort(
-    (member1, member2) => member2.hours - member1.hours
-  );
+  const teamMembers = useRecoilValue(teamMembersSelectorFamily(id));
 
   const screen = CanvasStore.screen;
   const isInScreen = inBounds(teamBox, screen);
@@ -28,13 +26,17 @@ export const TeamBox = ({ id }: Props) => {
   const [_, teamDragRef] = useTeamDrag(id);
 
   const [membersLeftCol, membersRightCol] = useMemo(() => {
+    const teamMembersSorted = [...teamMembers].sort(
+      (member1, member2) => member2.hours - member1.hours
+    );
+
     const leftCol: TeamMember[] = [];
     const rightCol: TeamMember[] = [];
 
     let totalHoursLeftCol = 0;
     let totalHoursRightCol = 0;
 
-    teamMembers.forEach((member) => {
+    teamMembersSorted.forEach((member) => {
       if (totalHoursLeftCol <= totalHoursRightCol) {
         leftCol.push(member);
         totalHoursLeftCol += member.hours;
