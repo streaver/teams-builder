@@ -39,7 +39,7 @@ export const DraggableTeamBox = ({ id }: Props) => {
       }}
       ref={mergeRefs([teamDragRef, teamMemberDropRef])}
     >
-      <TeamBox />
+      <TeamBox id={id} />
     </div>
   ) : null;
 };

@@ -14,7 +14,11 @@ export const TeamMemberAvatar = ({ id }: Props) => {
 
   const [{ isDragging }, dragRef] = useTeamMemberDrag(id);
 
-  return isDragging ? (
+  if (isDragging) {
+    return null;
+  }
+
+  return (
     <div
       ref={dragRef}
       className="relative w-16 h-16 overflow-hidden bg-white rounded-full group"
@@ -29,5 +33,5 @@ export const TeamMemberAvatar = ({ id }: Props) => {
         {shortName}
       </p>
     </div>
-  ) : null;
+  );
 };

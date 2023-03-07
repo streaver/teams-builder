@@ -1,12 +1,16 @@
 import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
-import { TeamMember } from "@/types/Team";
+import { Team, TeamMember } from "@/types/Team";
 import { TEAM_PADDING } from "@/utils/constants";
 import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
 import { TeamMemberBox } from "./TeamMemberBox";
 
-export const TeamBox = () => {
+type Props = {
+  id: Team["id"];
+};
+
+export const TeamBox = ({ id }: Props) => {
   const team = useRecoilValue(teamAtomFamily(id));
   const teamMembers = useRecoilValue(teamMembersSelectorFamily(id));
 
