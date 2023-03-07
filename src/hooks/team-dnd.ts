@@ -30,7 +30,11 @@ export const useTeamDrag = (teamId: Team["id"]) => {
         isDragging: monitor.isDragging(),
       }),
     }),
+<<<<<<< HEAD
     [teamId, CanvasStore.screen]
+=======
+    [teamId, CanvasStore.screen] // Removing CanvasStore.screen causes an issue..
+>>>>>>> 09ff76f (Added the missing dependencies)
   );
 };
 
