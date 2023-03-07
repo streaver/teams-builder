@@ -1,9 +1,9 @@
+import { TeamMemberAvatar } from "@/components/team-member/avatar/TeamMemberAvatar";
 import { useTeamMemberDrag } from "@/hooks/team-members-dnd";
 import { TeamMember } from "@/types/Team";
 import classNames from "classnames";
 import { useEffect } from "react";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { TeamMemberAvatar } from "./TeamMemberAvatar";
 
 type Props = {
   id: TeamMember["id"];

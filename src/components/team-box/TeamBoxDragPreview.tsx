@@ -1,7 +1,7 @@
+import { TeamBox } from "@/components/team-box/TeamBox";
 import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
 import { Team } from "@/types/Team";
 import { useRecoilValue } from "recoil";
-import { TeamBox } from "./TeamBox";
 
 type Props = {
   id: Team["id"];

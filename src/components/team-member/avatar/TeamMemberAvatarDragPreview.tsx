@@ -1,5 +1,5 @@
+import { TeamMemberAvatar } from "@/components/team-member/avatar/TeamMemberAvatar";
 import { TeamMember } from "@/types/Team";
-import { TeamMemberAvatar } from "./TeamMemberAvatar";
 
 type Props = {
   id: TeamMember["id"];

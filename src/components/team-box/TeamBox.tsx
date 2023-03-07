@@ -1,10 +1,10 @@
+import { TeamMemberBox } from "@/components/team-member/TeamMemberBox";
 import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { Team, TeamMember } from "@/types/Team";
 import { TEAM_PADDING } from "@/utils/constants";
 import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
-import { TeamMemberBox } from "./TeamMemberBox";
 
 type Props = {
   id: Team["id"];

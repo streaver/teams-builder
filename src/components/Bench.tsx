@@ -1,4 +1,4 @@
-import { DraggableTeamMemberAvatar } from "@/components/DraggableTeamMemberAvatar";
+import { DraggableTeamMemberAvatar } from "@/components/team-member/avatar/DraggableTeamMemberAvatar";
 import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import { teamMemberIdsSelectorFamily } from "@/state/recoil/selectors/teamMemberIdsSelectorFamily";
 import { useRecoilValue } from "recoil";

@@ -2,7 +2,7 @@ import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily"
 import { TeamMember } from "@/types/Team";
 import { MEMBER_BORDER, MEMBER_HEIGHT, MEMBER_WIDTH } from "@/utils/constants";
 import { useRecoilValue } from "recoil";
-import { DraggableTeamMemberAvatar } from "./DraggableTeamMemberAvatar";
+import { DraggableTeamMemberAvatar } from "./avatar/DraggableTeamMemberAvatar";
 
 type Props = {
   id: TeamMember["id"];

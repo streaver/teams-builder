@@ -1,8 +1,8 @@
+import { DraggableTeamBox } from "@/components/team-box/DraggableTeamBox";
+import CanvasStore from "@/state/CanvasStore";
 import { teamIdsAtom } from "@/state/recoil/atoms/teamIdsAtom";
 import { memo } from "react";
 import { useRecoilValue } from "recoil";
-import CanvasStore from "../state/CanvasStore";
-import { DraggableTeamBox } from "./DraggableTeamBox";
 
 type Props = {
   frame: string;

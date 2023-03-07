@@ -1,3 +1,4 @@
+import { TeamBox } from "@/components/team-box/TeamBox";
 import { useTeamDrag } from "@/hooks/team-dnd";
 import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
@@ -7,7 +8,6 @@ import { useEffect } from "react";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { mergeRefs } from "react-merge-refs";
 import { useRecoilValue } from "recoil";
-import { TeamBox } from "./TeamBox";
 
 type Props = {
   id: number;
