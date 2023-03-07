@@ -1,8 +1,13 @@
 import { TeamBoxDndItem, TEAM_BOX } from "@/hooks/team-dnd";
+import {
+  TeamMemberDndItem,
+  TEAM_MEMBER_AVATAR,
+} from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
 import { applyReverseScale } from "@/utils/math-utils";
 import { useDragLayer } from "react-dnd";
 import { TeamBoxDragPreview } from "./TeamBoxDragPreview";
+import { TeamMemberAvatarDragPreview } from "./TeamMemberAvatarDragPreview";
 
 export const CustomDragLayer = () => {
   const { itemType, isDragging, item, initialPosition, delta } = useDragLayer(
@@ -24,6 +29,11 @@ export const CustomDragLayer = () => {
       case TEAM_BOX:
         const teamId = (item as TeamBoxDndItem).teamId;
         return <TeamBoxDragPreview id={teamId} />;
+
+      case TEAM_MEMBER_AVATAR:
+        const memberId = (item as TeamMemberDndItem).id;
+        return <TeamMemberAvatarDragPreview id={memberId} />;
+
       default:
         return null;
     }
