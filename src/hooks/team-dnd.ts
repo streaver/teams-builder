@@ -12,8 +12,12 @@ export type TeamBoxDndItem = {
   screen: typeof CanvasStore.screen;
 };
 
+export type TeamBoxDndCollectedProps = {
+  isDragging: boolean;
+};
+
 export const useTeamDrag = (teamId: Team["id"]) => {
-  return useDrag<TeamBoxDndItem>(
+  return useDrag<TeamBoxDndItem, unknown, TeamBoxDndCollectedProps>(
     () => ({
       type: TEAM_BOX,
       item: {
@@ -22,6 +26,9 @@ export const useTeamDrag = (teamId: Team["id"]) => {
         // If that happens, the original position of the camera will be needed to compute the right position.
         screen: CanvasStore.screen,
       },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
     }),
     [teamId, CanvasStore.screen]
   );
