@@ -10,6 +10,7 @@ import {
 import { mergeRefs } from "react-merge-refs";
 import useRenderLoop from "../core/RenderLoop";
 import CanvasStore from "../state/CanvasStore";
+import { CanvasEdgesDropZone } from "./CanvasEdgesDropZone";
 import ScaledContainer from "./ScaledContainer";
 
 const InfiniteCanvas = () => {
@@ -47,6 +48,7 @@ const InfiniteCanvas = () => {
       onWheel={handleWheel}
       onPointerMove={handlePointer}
     >
+      <CanvasEdgesDropZone />
       <ScaledContainer frame={frame} />
     </div>
   );
