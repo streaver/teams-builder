@@ -1,3 +1,4 @@
+import { useTeamDrag } from "@/hooks/team-dnd";
 import CanvasStore from "@/state/CanvasStore";
 import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
 import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
@@ -5,8 +6,8 @@ import { teamMemberIdsSelectorFamily } from "@/state/recoil/selectors/teamMember
 import { TEAM_PADDING } from "@/utils/constants";
 import { inBounds } from "@/utils/math-utils";
 import { useRecoilValue } from "recoil";
-import { TeamMemberBox } from "./TeamMemberBox";
 import { TeamBoxWrapper } from "./TeamBoxWrapper";
+import { TeamMemberBox } from "./TeamMemberBox";
 
 type Props = {
   id: number;
@@ -21,6 +22,8 @@ export const TeamBox = ({ id }: Props) => {
   const screen = CanvasStore.screen;
   const isInScreen = inBounds(teamBox, screen);
 
+  const [_, teamDragRef] = useTeamDrag(id);
+
   return isInScreen ? (
     <TeamBoxWrapper id={id}>
       <div
@@ -31,6 +34,7 @@ export const TeamBox = ({ id }: Props) => {
           width: teamBox.width,
           height: teamBox.height,
         }}
+        ref={teamDragRef}
       >
         <div
           className="relative flex flex-wrap h-full gap-2"
