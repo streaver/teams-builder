@@ -3,11 +3,16 @@ import { TeamMemberAvatarDragPreview } from "@/components/team-member/avatar/Tea
 import { TeamBoxDndItem } from "@/hooks/team-dnd";
 import { TeamMemberDndItem } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
+import { itemTypeBeingDraggedAtom } from "@/state/recoil/atoms/itemTypeBeingDraggedAtom";
 import { DraggableItemType } from "@/utils/dnd";
 import { applyReverseScale } from "@/utils/math-utils";
+import { useEffect } from "react";
 import { useDragLayer } from "react-dnd";
+import { useSetRecoilState } from "recoil";
 
 export const CustomDragLayer = () => {
+  const setItemTypeBeingDragged = useSetRecoilState(itemTypeBeingDraggedAtom);
+
   const { itemType, isDragging, item, initialPosition, delta } = useDragLayer(
     (monitor) => ({
       item: monitor.getItem(),
@@ -17,6 +22,11 @@ export const CustomDragLayer = () => {
       isDragging: monitor.isDragging(),
     })
   );
+
+  // When an item is being dragged, stores the item's type, otherwise stores null.
+  useEffect(() => {
+    setItemTypeBeingDragged(isDragging ? itemType : null);
+  }, [isDragging, itemType, setItemTypeBeingDragged]);
 
   if (!isDragging || !delta || !initialPosition) {
     return null;
