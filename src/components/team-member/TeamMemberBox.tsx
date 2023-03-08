@@ -14,7 +14,7 @@ export const TeamMemberBox = ({ id }: Props) => {
 
   return (
     <div
-      className="flex flex-col items-center py-0.5 border-dashed rounded-3xl border-dam-blue-400"
+      className="flex flex-col items-center py-0.5 border-dashed rounded-3xl bg-dam-blue-400 bg-opacity-[15%] border-dam-blue-400"
       style={{
         width: MEMBER_WIDTH,
         height: memberBoxHeight,

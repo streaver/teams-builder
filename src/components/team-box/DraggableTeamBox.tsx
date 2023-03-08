@@ -29,7 +29,7 @@ export const DraggableTeamBox = ({ id }: Props) => {
 
   return isInScreen ? (
     <div
-      className="absolute border-2 border-dashed rounded-3xl bg-dam-blue-100 border-dam-blue-400"
+      className="absolute border-2 border-dashed rounded-3xl bg-dam-blue-400 bg-opacity-[15%] border-dam-blue-400"
       style={{
         left: teamBox.x - screen.x,
         top: teamBox.y - screen.y,
