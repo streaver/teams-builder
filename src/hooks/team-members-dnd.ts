@@ -50,9 +50,9 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null) => {
 
           // Update the box height of the selected member's old team.
           if (memberPicked.teamId !== null) {
-            const dragTeamMembersSnapshot = snapshot.getLoadable(
+            const dragTeamMembersSnapshot = await snapshot.getPromise(
               teamMembersSelectorFamily(memberPicked.teamId)
-            ).contents;
+            );
 
             const dragTeamMembers = dragTeamMembersSnapshot.filter(
               (member: TeamMember) => member.id !== teamMemberId
