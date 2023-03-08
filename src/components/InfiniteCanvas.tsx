@@ -5,6 +5,7 @@ import useRenderLoop from "@/core/RenderLoop";
 import { useTeamDrop } from "@/hooks/team-dnd";
 import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
+import { isTeamMemberDraggingOverCanvasAtom } from "@/state/recoil/atoms/isTeamMemberDraggingOverCanvasAtom";
 import useSize from "@react-hook/size";
 import {
   PointerEvent,
@@ -14,10 +15,15 @@ import {
   WheelEvent,
 } from "react";
 import { mergeRefs } from "react-merge-refs";
+import { useSetRecoilState } from "recoil";
 
 const InfiniteCanvas = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [width, height] = useSize(canvasRef);
+
+  const setIsTeamMemberDraggingOverCanvas = useSetRecoilState(
+    isTeamMemberDraggingOverCanvasAtom
+  );
 
   useEffect(() => {
     if (width === 0 || height === 0) return;
@@ -43,7 +49,11 @@ const InfiniteCanvas = () => {
 
   const frame = useRenderLoop(60);
 
-  const [{}, teamMemberDropRef] = useTeamMemberDrop("NEW_TEAM");
+  const [{ isOverCurrent }, teamMemberDropRef] = useTeamMemberDrop("NEW_TEAM");
+
+  useEffect(() => {
+    setIsTeamMemberDraggingOverCanvas(isOverCurrent);
+  }, [isOverCurrent, setIsTeamMemberDraggingOverCanvas]);
 
   return (
     <div

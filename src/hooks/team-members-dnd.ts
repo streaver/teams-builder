@@ -17,7 +17,7 @@ type TeamMemberDragCollectedProps = {
 };
 
 type TeamMemberDropCollectedProps = {
-  isDragging: boolean;
+  isOverCurrent: boolean;
 };
 
 export const useTeamMemberDrag = (id: TeamMember["id"]) => {
@@ -105,6 +105,9 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
 
         updateTeamMember(item.id);
       },
+      collect: (monitor) => ({
+        isOverCurrent: monitor.isOver({ shallow: true }),
+      }),
     }),
     [updateTeamMember]
   );
