@@ -3,6 +3,7 @@ import {
   DEFAULT_TEAM_BOX_HEIGHT,
   MEMBER_BORDER,
   MEMBER_HEIGHT,
+  TEAM_GAP,
   TEAM_PADDING,
 } from "./constants";
 
@@ -35,7 +36,10 @@ export const calculateTeamBoxHeight = (teamMembers: TeamMember[]): number => {
   const heightBorders = MEMBER_BORDER * totalMembersCol;
 
   let totalHeight =
-    heightByHours + heightBorders + TEAM_PADDING * (totalMembersCol + 1);
+    heightByHours +
+    heightBorders +
+    TEAM_PADDING * totalMembersCol +
+    (totalMembersCol - 1) * TEAM_GAP;
 
   // If the new height < default height (2x2), totalheigth = default height
   if (totalHeight < DEFAULT_TEAM_BOX_HEIGHT) {

@@ -9,11 +9,11 @@ import {
   GRID_COLS,
   GRID_GAP,
   MEMBER_BORDER,
-  MEMBER_HEIGHT,
   MEMBER_WIDTH,
   TEAM_GAP,
   TEAM_PADDING,
 } from "@/utils/constants";
+import { calculateTeamBoxHeight } from "@/utils/teams-utils";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { MutableSnapshot, RecoilRoot } from "recoil";
 
@@ -57,25 +57,13 @@ export const RecoilProvider = ({ children }: PropsWithChildren) => {
     // Initially they'll be displayed in a n*3 grid (n rows, 3 colums).
     teamIds.forEach((id, index) => {
       // The number of members in the team
-      const membersCount = teamMembers.filter(
-        (member) => member.teamId === id
-      ).length;
-
-      // Each box will contain at least 2 rows.
-      // It might take more if the team contains more members
-      const rowsNeeded = Math.max(2, Math.ceil(membersCount / 2));
+      const members = teamMembers.filter((member) => member.teamId === id);
 
       // Each box fits two members horizontally (including borders, padding and gap)
       const width =
         2 * MEMBER_WIDTH + 2 * TEAM_PADDING + 2 * MEMBER_BORDER + TEAM_GAP;
 
-      // The height might be different between boxes, some might be larger than others.
-      // It depends on the number of members (aka rowsNeeded)
-      const height =
-        rowsNeeded * MEMBER_HEIGHT +
-        2 * TEAM_PADDING +
-        2 * MEMBER_BORDER +
-        (rowsNeeded - 1) * TEAM_GAP;
+      const height = calculateTeamBoxHeight(members);
 
       // The x position of the box equals their left adjacent box (x + width) or zero if the top adjacent box doesn't exist.
       let x: number;

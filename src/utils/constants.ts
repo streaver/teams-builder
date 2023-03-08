@@ -18,4 +18,4 @@ export const GRID_GAP = 64;
 
 // Team box Height
 export const DEFAULT_TEAM_BOX_HEIGHT =
-  MEMBER_HEIGHT * 2 + MEMBER_BORDER * 2 + TEAM_PADDING * 3;
+  MEMBER_HEIGHT * 2 + MEMBER_BORDER * 2 + TEAM_PADDING * 2 + TEAM_GAP;
