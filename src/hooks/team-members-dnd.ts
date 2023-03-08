@@ -1,12 +1,14 @@
+import CanvasStore from "@/state/CanvasStore";
 import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
 import { teamIdsAtom } from "@/state/recoil/atoms/teamIdsAtom";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { Team, TeamMember } from "@/types/Team";
 import { DraggableItemType } from "@/utils/dnd";
+import { applyReverseScale } from "@/utils/math-utils";
 import { randomTeamId } from "@/utils/team-utils";
 import { calculateTeamBoxHeight } from "@/utils/teams-utils";
-import { useDrag, useDrop } from "react-dnd";
+import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { useRecoilCallback } from "recoil";
 
 export type TeamMemberDndItem = {
@@ -39,8 +41,12 @@ export const useTeamMemberDrag = (id: TeamMember["id"]) => {
 export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
   const createNewTeam = useRecoilCallback(
     ({ set }) =>
-      (newTeamId: Team["id"]) => {
+      (newTeamId: Team["id"], position: XYCoord) => {
         set(teamIdsAtom, (teamIds) => [...teamIds, newTeamId] as number[]);
+        set(teamBoxAtomFamily(newTeamId), (teamBox) => ({
+          ...teamBox,
+          ...position,
+        }));
       },
     []
   );
@@ -113,12 +119,31 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
           return;
         }
 
+        let initialPos = monitor.getInitialSourceClientOffset();
+        let delta = monitor.getDifferenceFromInitialOffset();
+        if (!delta || !initialPos) {
+          return;
+        }
+
         const teamMemberId = item.id;
         const shouldCreateATeam = teamId === "NEW_TEAM";
         const targetTeamId = shouldCreateATeam ? randomTeamId() : teamId;
 
         if (shouldCreateATeam) {
-          createNewTeam(targetTeamId!);
+          const screen = CanvasStore.screen;
+          const canvasScale = CanvasStore.scale;
+
+          const position = applyReverseScale(
+            {
+              x: initialPos.x + delta.x,
+              y: initialPos.y + delta.y,
+            },
+            canvasScale
+          );
+          position.x += screen.x;
+          position.y += screen.y;
+
+          createNewTeam(targetTeamId!, position);
         }
 
         moveTeamMemberIntoTeam(teamMemberId, targetTeamId);
