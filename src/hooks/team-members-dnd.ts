@@ -31,37 +31,41 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null) => {
 
         if (memberPicked.teamId !== teamId) {
           // Update the box height of the selected member's new team.
-          const dropTeamMembersSnapshot = await snapshot.getPromise(
-            teamMembersSelectorFamily(teamId)
-          );
+          if (teamId !== null) {
+            const dropTeamMembersSnapshot = await snapshot.getPromise(
+              teamMembersSelectorFamily(teamId)
+            );
 
-          const dropTeamMembers = [...dropTeamMembersSnapshot];
-          dropTeamMembers.push(memberPicked);
+            const dropTeamMembers = [...dropTeamMembersSnapshot];
+            dropTeamMembers.push(memberPicked);
 
-          const dropTeamBoxtotalHeight =
-            calculateTeamBoxHeight(dropTeamMembers);
+            const dropTeamBoxtotalHeight =
+              calculateTeamBoxHeight(dropTeamMembers);
 
-          set(teamBoxAtomFamily(teamId!), (currentData) => ({
-            ...currentData,
-            height: dropTeamBoxtotalHeight,
-          }));
+            set(teamBoxAtomFamily(teamId), (currentData) => ({
+              ...currentData,
+              height: dropTeamBoxtotalHeight,
+            }));
+          }
 
           // Update the box height of the selected member's old team.
-          const dragTeamMembersSnapshot = snapshot.getLoadable(
-            teamMembersSelectorFamily(memberPicked.teamId)
-          ).contents;
+          if (memberPicked.teamId !== null) {
+            const dragTeamMembersSnapshot = snapshot.getLoadable(
+              teamMembersSelectorFamily(memberPicked.teamId)
+            ).contents;
 
-          const dragTeamMembers = dragTeamMembersSnapshot.filter(
-            (member: TeamMember) => member.id !== teamMemberId
-          );
+            const dragTeamMembers = dragTeamMembersSnapshot.filter(
+              (member: TeamMember) => member.id !== teamMemberId
+            );
 
-          const dragTeamBoxtotalHeight =
-            calculateTeamBoxHeight(dragTeamMembers);
+            const dragTeamBoxtotalHeight =
+              calculateTeamBoxHeight(dragTeamMembers);
 
-          set(teamBoxAtomFamily(memberPicked.teamId!), (currentData) => ({
-            ...currentData,
-            height: dragTeamBoxtotalHeight,
-          }));
+            set(teamBoxAtomFamily(memberPicked.teamId), (currentData) => ({
+              ...currentData,
+              height: dragTeamBoxtotalHeight,
+            }));
+          }
         }
 
         set(teamMemberAtomFamily(teamMemberId), (member) => ({
