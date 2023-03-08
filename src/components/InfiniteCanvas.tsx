@@ -5,7 +5,8 @@ import useRenderLoop from "@/core/RenderLoop";
 import { useTeamDrop } from "@/hooks/team-dnd";
 import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
-import { isTeamMemberDraggingOverCanvasAtom } from "@/state/recoil/atoms/isTeamMemberDraggingOverCanvasAtom";
+import { isTeamMemberDraggingOverDropZoneAtomFamily } from "@/state/recoil/atoms/isTeamMemberDraggingOverDropZoneAtomFamily";
+import { DropZone } from "@/utils/dnd";
 import useSize from "@react-hook/size";
 import {
   PointerEvent,
@@ -22,7 +23,7 @@ const InfiniteCanvas = () => {
   const [width, height] = useSize(canvasRef);
 
   const setIsTeamMemberDraggingOverCanvas = useSetRecoilState(
-    isTeamMemberDraggingOverCanvasAtom
+    isTeamMemberDraggingOverDropZoneAtomFamily(DropZone.CANVAS)
   );
 
   useEffect(() => {

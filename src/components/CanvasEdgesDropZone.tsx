@@ -1,6 +1,7 @@
 import { TeamBoxDndItem } from "@/hooks/team-dnd";
 import CanvasStore from "@/state/CanvasStore";
-import { DraggableItemType } from "@/utils/dnd";
+import { isTeamMemberDraggingOverDropZoneAtomFamily } from "@/state/recoil/atoms/isTeamMemberDraggingOverDropZoneAtomFamily";
+import { DraggableItemType, DropZone } from "@/utils/dnd";
 import {
   CSSProperties,
   PropsWithChildren,
@@ -9,6 +10,7 @@ import {
   useState,
 } from "react";
 import { useDrop } from "react-dnd";
+import { useSetRecoilState } from "recoil";
 
 const CAMERA_STEP_ON_DRAG = 5;
 const EDGE_SIZE_IN_PIXELS = 40;
@@ -90,7 +92,10 @@ export const EdgeDropZone = ({
     { isOver: boolean }
   >(
     () => ({
-      accept: DraggableItemType.TEAM_BOX,
+      accept: [
+        DraggableItemType.TEAM_BOX,
+        DraggableItemType.TEAM_MEMBER_AVATAR,
+      ],
       canDrop: () => false, // By making canDrop return false we make sure the drop event will propagate upwards (to the canvas)
       collect: (monitor) => ({
         isOver: monitor.isOver(),
@@ -124,19 +129,26 @@ export const CanvasEdgesDropZone = () => {
   const [isOverLeft, setIsOverLeft] = useState(false);
   const [isOverTopLeft, setIsOverTopLeft] = useState(false);
 
+  const setIsTeamMemberDraggingOverEdges = useSetRecoilState(
+    isTeamMemberDraggingOverDropZoneAtomFamily(DropZone.CANVAS_EDGE)
+  );
+
   const animationFrameRef = useRef<number>();
 
   useEffect(() => {
-    if (
-      !isOverTop &&
-      !isOverTopRigh &&
-      !isOverRight &&
-      !isOverBottomRigh &&
-      !isOverBottom &&
-      !isOverBottomLeft &&
-      !isOverLeft &&
-      !isOverTopLeft
-    ) {
+    const isOverEdges =
+      isOverTop ||
+      isOverTopRigh ||
+      isOverRight ||
+      isOverBottomRigh ||
+      isOverBottom ||
+      isOverBottomLeft ||
+      isOverLeft ||
+      isOverTopLeft;
+
+    setIsTeamMemberDraggingOverEdges(isOverEdges);
+
+    if (!isOverEdges) {
       return;
     }
 
@@ -177,6 +189,7 @@ export const CanvasEdgesDropZone = () => {
     isOverTop,
     isOverTopLeft,
     isOverTopRigh,
+    setIsTeamMemberDraggingOverEdges,
   ]);
 
   return (

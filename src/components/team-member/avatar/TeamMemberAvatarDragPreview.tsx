@@ -1,7 +1,8 @@
 import { NewTeamDragPreview } from "@/components/team-box/NewTeamDragPreview";
 import { TeamMemberAvatar } from "@/components/team-member/avatar/TeamMemberAvatar";
-import { isTeamMemberDraggingOverCanvasAtom } from "@/state/recoil/atoms/isTeamMemberDraggingOverCanvasAtom";
+import { isTeamMemberDraggingOverDropZoneAtomFamily } from "@/state/recoil/atoms/isTeamMemberDraggingOverDropZoneAtomFamily";
 import { TeamMember } from "@/types/Team";
+import { DropZone } from "@/utils/dnd";
 import { useRecoilValue } from "recoil";
 
 type Props = {
@@ -9,11 +10,14 @@ type Props = {
 };
 
 export const TeamMemberAvatarDragPreview = ({ id }: Props) => {
-  const isTeamMemberDraggingOverCanvas = useRecoilValue(
-    isTeamMemberDraggingOverCanvasAtom
+  const isDraggingOverCanvas = useRecoilValue(
+    isTeamMemberDraggingOverDropZoneAtomFamily(DropZone.CANVAS)
+  );
+  const isDraggingOverCanvasEdges = useRecoilValue(
+    isTeamMemberDraggingOverDropZoneAtomFamily(DropZone.CANVAS_EDGE)
   );
 
-  return isTeamMemberDraggingOverCanvas ? (
+  return isDraggingOverCanvas || isDraggingOverCanvasEdges ? (
     <NewTeamDragPreview teamMemberId={id} />
   ) : (
     <TeamMemberAvatar id={id} />
