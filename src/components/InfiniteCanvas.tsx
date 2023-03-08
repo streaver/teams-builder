@@ -3,6 +3,7 @@ import { CustomDragLayer } from "@/components/CustomDragLayer";
 import ScaledContainer from "@/components/ScaledContainer";
 import useRenderLoop from "@/core/RenderLoop";
 import { useTeamDrop } from "@/hooks/team-dnd";
+import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
 import useSize from "@react-hook/size";
 import {
@@ -42,10 +43,12 @@ const InfiniteCanvas = () => {
 
   const frame = useRenderLoop(60);
 
+  const [{}, teamMemberDropRef] = useTeamMemberDrop("NEW_TEAM");
+
   return (
     <div
       className="relative w-full h-full overflow-hidden border-2 border-dashed bg-dam-blue-400 bg-opacity-[15%] border-dam-blue-400 overscroll-none"
-      ref={mergeRefs([canvasRef, teamDropRef])}
+      ref={mergeRefs([canvasRef, teamDropRef, teamMemberDropRef])}
       onWheel={handleWheel}
       onPointerMove={handlePointer}
     >

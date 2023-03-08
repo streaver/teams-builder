@@ -3,6 +3,7 @@ import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily"
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { Team, TeamMember } from "@/types/Team";
 import { DraggableItemType } from "@/utils/dnd";
+import { randomTeamId } from "@/utils/team-utils";
 import { calculateTeamBoxHeight } from "@/utils/teams-utils";
 import { useDrag, useDrop } from "react-dnd";
 import { useRecoilCallback } from "recoil";
@@ -11,12 +12,16 @@ export type TeamMemberDndItem = {
   id: TeamMember["id"];
 };
 
-export type TeamMemberDndCollectedProps = {
+type TeamMemberDragCollectedProps = {
+  isDragging: boolean;
+};
+
+type TeamMemberDropCollectedProps = {
   isDragging: boolean;
 };
 
 export const useTeamMemberDrag = (id: TeamMember["id"]) => {
-  return useDrag<TeamMemberDndItem, unknown, TeamMemberDndCollectedProps>(
+  return useDrag<TeamMemberDndItem, unknown, TeamMemberDragCollectedProps>(
     () => ({
       type: DraggableItemType.TEAM_MEMBER_AVATAR,
       item: {
@@ -30,19 +35,21 @@ export const useTeamMemberDrag = (id: TeamMember["id"]) => {
   );
 };
 
-export const useTeamMemberDrop = (teamId: Team["id"] | null) => {
+export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
   const updateTeamMember = useRecoilCallback(
-    ({ snapshot, set }) =>
+    ({ set, snapshot }) =>
       async (teamMemberId: TeamMember["id"]) => {
+        let actualTeamId = teamId === "NEW_TEAM" ? randomTeamId() : teamId;
+
         const memberPicked = await snapshot.getPromise(
           teamMemberAtomFamily(teamMemberId)
         );
 
-        if (memberPicked.teamId !== teamId) {
+        if (memberPicked.teamId !== actualTeamId) {
           // Update the box height of the selected member's new team.
-          if (teamId !== null) {
+          if (actualTeamId !== null) {
             const dropTeamMembersSnapshot = await snapshot.getPromise(
-              teamMembersSelectorFamily(teamId)
+              teamMembersSelectorFamily(actualTeamId)
             );
 
             const dropTeamMembers = [...dropTeamMembersSnapshot];
@@ -51,7 +58,7 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null) => {
             const dropTeamBoxtotalHeight =
               calculateTeamBoxHeight(dropTeamMembers);
 
-            set(teamBoxAtomFamily(teamId), (currentData) => ({
+            set(teamBoxAtomFamily(actualTeamId), (currentData) => ({
               ...currentData,
               height: dropTeamBoxtotalHeight,
             }));
@@ -79,16 +86,23 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null) => {
 
         set(teamMemberAtomFamily(teamMemberId), (member) => ({
           ...member,
-          teamId,
+          teamId: actualTeamId,
         }));
       },
     [teamId]
   );
 
-  return useDrop<TeamMemberDndItem>(
+  return useDrop<TeamMemberDndItem, unknown, TeamMemberDropCollectedProps>(
     () => ({
       accept: DraggableItemType.TEAM_MEMBER_AVATAR,
-      drop: (item) => {
+      drop: (item, monitor) => {
+        // The team member is ignored if it was already accepted by another drop target.
+        // This is useful since we have multiple containers that accept team-members (a team, the canvas).
+        // If a team accepts the team-member being dragged, we want the canvas to ignore it.
+        if (monitor.didDrop()) {
+          return;
+        }
+
         updateTeamMember(item.id);
       },
     }),

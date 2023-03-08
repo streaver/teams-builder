@@ -11,12 +11,14 @@ export type TeamBoxDndItem = {
   screen: typeof CanvasStore.screen;
 };
 
-export type TeamBoxDndCollectedProps = {
+type TeamBoxDragCollectedProps = {
   isDragging: boolean;
 };
 
+type TeamBoxDropCollectedProps = {};
+
 export const useTeamDrag = (teamId: Team["id"]) => {
-  return useDrag<TeamBoxDndItem, unknown, TeamBoxDndCollectedProps>(
+  return useDrag<TeamBoxDndItem, unknown, TeamBoxDragCollectedProps>(
     () => ({
       type: DraggableItemType.TEAM_BOX,
       item: {
@@ -48,7 +50,7 @@ export const useTeamDrop = () => {
     []
   );
 
-  return useDrop<TeamBoxDndItem>(
+  return useDrop<TeamBoxDndItem, unknown, TeamBoxDropCollectedProps>(
     () => ({
       accept: DraggableItemType.TEAM_BOX,
       drop: (item, monitor) => {
@@ -72,6 +74,7 @@ export const useTeamDrop = () => {
         handleTeamDrop(item.teamId, delta);
       },
     }),
+
     [handleTeamDrop]
   );
 };
