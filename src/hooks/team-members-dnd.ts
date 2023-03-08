@@ -4,8 +4,7 @@ import { teamIdsAtom } from "@/state/recoil/atoms/teamIdsAtom";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { Team, TeamMember } from "@/types/Team";
-import { DraggableItemType } from "@/utils/dnd";
-import { applyReverseScale } from "@/utils/math-utils";
+import { DraggableItemType, getPositionAfterDrop } from "@/utils/dnd";
 import { randomTeamId } from "@/utils/team-utils";
 import { calculateTeamBoxHeight } from "@/utils/teams-utils";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
@@ -119,9 +118,9 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
           return;
         }
 
-        let initialPos = monitor.getInitialSourceClientOffset();
+        let initialPosition = monitor.getInitialSourceClientOffset();
         let delta = monitor.getDifferenceFromInitialOffset();
-        if (!delta || !initialPos) {
+        if (!delta || !initialPosition) {
           return;
         }
 
@@ -130,20 +129,14 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
         const targetTeamId = shouldCreateATeam ? randomTeamId() : teamId;
 
         if (shouldCreateATeam) {
-          const screen = CanvasStore.screen;
-          const canvasScale = CanvasStore.scale;
+          const newTeamPosition = getPositionAfterDrop({
+            initialPosition,
+            delta,
+            scale: CanvasStore.scale,
+            screen: CanvasStore.screen,
+          });
 
-          const position = applyReverseScale(
-            {
-              x: initialPos.x + delta.x,
-              y: initialPos.y + delta.y,
-            },
-            canvasScale
-          );
-          position.x += screen.x;
-          position.y += screen.y;
-
-          createNewTeam(targetTeamId!, position);
+          createNewTeam(targetTeamId!, newTeamPosition);
         }
 
         moveTeamMemberIntoTeam(teamMemberId, targetTeamId);
