@@ -1,24 +1,18 @@
-import { useTeamMemberDrag } from "@/hooks/team-members-dnd";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
+import { TeamMember } from "@/types/Team";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
 
 type Props = {
-  id: number;
+  id: TeamMember["id"];
 };
 
 export const TeamMemberAvatar = ({ id }: Props) => {
   const teamMember = useRecoilValue(teamMemberAtomFamily(id));
-
   const shortName = `${teamMember.firstName} ${teamMember.lastName[0]}.`;
 
-  const [{ isDragging }, dragRef] = useTeamMemberDrag(id);
-
-  return isDragging ? (
-    <div
-      ref={dragRef}
-      className="relative w-16 h-16 overflow-hidden bg-white rounded-full group"
-    >
+  return (
+    <div className="relative w-16 h-16 overflow-hidden bg-white rounded-full group">
       <Image
         fill
         alt={`${teamMember.firstName} ${teamMember.lastName}`}
@@ -29,5 +23,5 @@ export const TeamMemberAvatar = ({ id }: Props) => {
         {shortName}
       </p>
     </div>
-  ) : null;
+  );
 };

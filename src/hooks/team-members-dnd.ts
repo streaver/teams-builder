@@ -2,11 +2,10 @@ import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { Team, TeamMember } from "@/types/Team";
+import { DraggableItemType } from "@/utils/dnd";
 import { calculateTeamBoxHeight } from "@/utils/teams-utils";
 import { useDrag, useDrop } from "react-dnd";
 import { useRecoilCallback } from "recoil";
-
-export const TEAM_MEMBER_AVATAR = "team_member_avatar";
 
 export type TeamMemberDndItem = {
   id: TeamMember["id"];
@@ -19,7 +18,7 @@ export type TeamMemberDndCollectedProps = {
 export const useTeamMemberDrag = (id: TeamMember["id"]) => {
   return useDrag<TeamMemberDndItem, unknown, TeamMemberDndCollectedProps>(
     () => ({
-      type: TEAM_MEMBER_AVATAR,
+      type: DraggableItemType.TEAM_MEMBER_AVATAR,
       item: {
         id,
       },
@@ -86,10 +85,13 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null) => {
     [teamId]
   );
 
-  return useDrop<TeamMemberDndItem>(() => ({
-    accept: TEAM_MEMBER_AVATAR,
-    drop: (item) => {
-      updateTeamMember(item.id);
-    },
-  }));
+  return useDrop<TeamMemberDndItem>(
+    () => ({
+      accept: DraggableItemType.TEAM_MEMBER_AVATAR,
+      drop: (item) => {
+        updateTeamMember(item.id);
+      },
+    }),
+    [updateTeamMember]
+  );
 };

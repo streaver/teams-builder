@@ -1,8 +1,8 @@
+import { DraggableTeamBox } from "@/components/team-box/DraggableTeamBox";
+import CanvasStore from "@/state/CanvasStore";
 import { teamIdsAtom } from "@/state/recoil/atoms/teamIdsAtom";
 import { memo } from "react";
 import { useRecoilValue } from "recoil";
-import CanvasStore from "../state/CanvasStore";
-import { TeamBox } from "./TeamBox";
 
 type Props = {
   frame: string;
@@ -22,7 +22,7 @@ const ScaledContainer = ({ frame }: Props) => {
       }}
     >
       {teamIds.map((teamId) => (
-        <TeamBox key={teamId} id={teamId} />
+        <DraggableTeamBox key={teamId} id={teamId} />
       ))}
     </div>
   );

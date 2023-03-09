@@ -1,5 +1,6 @@
-import { TeamBoxDndItem, TEAM_BOX } from "@/hooks/team-dnd";
+import { TeamBoxDndItem } from "@/hooks/team-dnd";
 import CanvasStore from "@/state/CanvasStore";
+import { DraggableItemType } from "@/utils/dnd";
 import {
   CSSProperties,
   PropsWithChildren,
@@ -89,13 +90,13 @@ export const EdgeDropZone = ({
     { isOver: boolean }
   >(
     () => ({
-      accept: TEAM_BOX,
+      accept: DraggableItemType.TEAM_BOX,
       canDrop: () => false, // By making canDrop return false we make sure the drop event will propagate upwards (to the canvas)
       collect: (monitor) => ({
         isOver: monitor.isOver(),
       }),
     }),
-    [onHover]
+    []
   );
 
   useEffect(() => {
