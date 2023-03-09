@@ -1,10 +1,10 @@
-import { TeamMemberBox } from "@/components/team-member/TeamMemberBox";
 import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { Team, TeamMember } from "@/types/Team";
 import { TEAM_PADDING } from "@/utils/constants";
 import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
+import { DraggableTeamMember } from "../team-member/DraggableTeamMember";
 
 type Props = {
   id: Team["id"];
@@ -45,12 +45,12 @@ export const TeamBox = ({ id }: Props) => {
     >
       <div className="flex flex-col h-full gap-2">
         {membersLeftCol.map((memberId) => (
-          <TeamMemberBox key={memberId} id={memberId} />
+          <DraggableTeamMember key={memberId} id={memberId} withSurrondingBox />
         ))}
       </div>
       <div className="flex flex-col h-full gap-2">
         {membersRightCol.map((memberId) => (
-          <TeamMemberBox key={memberId} id={memberId} />
+          <DraggableTeamMember key={memberId} id={memberId} withSurrondingBox />
         ))}
       </div>
       <span className="absolute -translate-x-1/2 left-1/2 -bottom-8">

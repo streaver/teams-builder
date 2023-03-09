@@ -1,10 +1,10 @@
-import { DraggableTeamMemberAvatar } from "@/components/team-member/avatar/DraggableTeamMemberAvatar";
 import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import { itemTypeBeingDraggedAtom } from "@/state/recoil/atoms/itemTypeBeingDraggedAtom";
 import { teamMemberIdsSelectorFamily } from "@/state/recoil/selectors/teamMemberIdsSelectorFamily";
 import { DraggableItemType } from "@/utils/dnd";
 import classNames from "classnames";
 import { useRecoilValue } from "recoil";
+import { DraggableTeamMember } from "./team-member/DraggableTeamMember";
 
 const Bench = () => {
   const membersIds = useRecoilValue(teamMemberIdsSelectorFamily(null));
@@ -27,7 +27,7 @@ const Bench = () => {
       )}
     >
       {membersIds.map((id) => (
-        <DraggableTeamMemberAvatar key={id} id={id} />
+        <DraggableTeamMember key={id} id={id} />
       ))}
     </div>
   );

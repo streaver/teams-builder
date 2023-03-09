@@ -1,15 +1,20 @@
-import { TeamMemberAvatar } from "@/components/team-member/avatar/TeamMemberAvatar";
 import { useTeamMemberDrag } from "@/hooks/team-members-dnd";
 import { TeamMember } from "@/types/Team";
 import classNames from "classnames";
 import { useEffect } from "react";
 import { getEmptyImage } from "react-dnd-html5-backend";
+import { TeamMemberAvatar } from "./avatar/TeamMemberAvatar";
+import { TeamMemberBox } from "./TeamMemberBox";
 
 type Props = {
   id: TeamMember["id"];
+  withSurrondingBox?: boolean;
 };
 
-export const DraggableTeamMemberAvatar = ({ id }: Props) => {
+export const DraggableTeamMember = ({
+  id,
+  withSurrondingBox = false,
+}: Props) => {
   const [{ isDragging }, dragRef, dragPreview] = useTeamMemberDrag(id);
 
   useEffect(() => {
@@ -24,7 +29,11 @@ export const DraggableTeamMemberAvatar = ({ id }: Props) => {
         "opacity-100": !isDragging,
       })}
     >
-      <TeamMemberAvatar id={id} />
+      {withSurrondingBox ? (
+        <TeamMemberBox id={id} />
+      ) : (
+        <TeamMemberAvatar id={id} />
+      )}
     </div>
   );
 };
