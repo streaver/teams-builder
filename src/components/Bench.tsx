@@ -21,7 +21,7 @@ export const Bench = () => {
       className={classNames(
         "fixed z-30 bottom-0 left-0 flex gap-4 w-3/5 min-h-[96px] max-h-[192px] items-center p-4 flex-wrap overflow-y-auto rounded-3xl",
         {
-          "bg-gradient-to-r from-dam-blue-300 to-transparent":
+          "bg-gradient-to-r from-dam-blue-400/50 to-transparent":
             isTeamMemberBeingDragged,
         }
       )}
