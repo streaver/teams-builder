@@ -3,8 +3,12 @@ import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
 import { teamIdsAtom } from "@/state/recoil/atoms/teamIdsAtom";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import { teamMemberIdsAtom } from "@/state/recoil/atoms/teamMemberIdsAtom";
+import { clientIdsAtom } from "@/state/recoil/atoms/clientIdsAtom";
+import { clientAtomFamily } from "@/state/recoil/atoms/clientAtomFamily";
 import { Team, TeamMember } from "@/types/Team";
 import { TeamBoxSettings } from "@/types/TeamBoxSettings";
+import { Client } from "@/types/Client";
+
 import {
   GRID_COLS,
   GRID_GAP,
@@ -20,26 +24,33 @@ import { MutableSnapshot, RecoilRoot } from "recoil";
 export const RecoilProvider = ({ children }: PropsWithChildren) => {
   const [teams, setTeams] = useState<Team[] | null>(null);
   const [teamMembers, setTeamMembers] = useState<TeamMember[] | null>(null);
+  const [clients, setClients] = useState<Client[] | null>(null);
 
   useEffect(() => {
     const teamJson = localStorage.getItem("teams");
     const teamMembersJson = localStorage.getItem("team-members");
+    const clientJson = localStorage.getItem("clients");
 
     setTeams(teamJson ? JSON.parse(teamJson) : []);
     setTeamMembers(teamMembersJson ? JSON.parse(teamMembersJson) : []);
+    setClients(clientJson ? JSON.parse(clientJson) : []);
   }, []);
 
   const setInitialState = ({ set }: MutableSnapshot) => {
-    if (!teams || !teamMembers) return;
+    if (!teams || !teamMembers || !clients) return;
 
     const teamIds = teams.map((team) => team.id);
     const teamMemberIds = teamMembers.map((teamMember) => teamMember.id);
+    const clientIds = clients.map((client) => client.id);
 
     // Initialize the teamIds atom
     set(teamIdsAtom, teamIds);
 
     // Initialize the memberIds atom
     set(teamMemberIdsAtom, teamMemberIds);
+
+    // Initialize the clientIds atom
+    set(clientIdsAtom, clientIds);
 
     // Initilize the teamMembers atoms
     teamMembers.forEach((teamMember) => {
@@ -49,6 +60,11 @@ export const RecoilProvider = ({ children }: PropsWithChildren) => {
     // Initilize the team atoms
     teams.forEach((team) => {
       set(teamAtomFamily(team.id), team);
+    });
+
+    // Initilize the clients atoms
+    clients.forEach((client) => {
+      set(clientAtomFamily(client.id), client);
     });
 
     const boxesSettings: Record<Team["id"], TeamBoxSettings> = {};
@@ -107,7 +123,7 @@ export const RecoilProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
-  return teams !== null && teamMembers !== null ? (
+  return teams !== null && teamMembers !== null && clients !== null ? (
     <RecoilRoot initializeState={setInitialState}>{children}</RecoilRoot>
   ) : null;
 };
