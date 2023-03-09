@@ -2,14 +2,16 @@ import { TeamBox } from "@/components/team-box/TeamBox";
 import { useTeamDrag } from "@/hooks/team-dnd";
 import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
+import { isTeamMemberDraggingOverDropZoneAtomFamily } from "@/state/recoil/atoms/isTeamMemberDraggingOverDropZoneAtomFamily";
 import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
 import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
 import { clientColorSelectorFamily } from "@/state/recoil/selectors/clientColorSelectorFamily";
+import { DropZone } from "@/utils/dnd";
 import { inBounds } from "@/utils/math-utils";
 import { useEffect } from "react";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { mergeRefs } from "react-merge-refs";
-import { constSelector, useRecoilValue } from "recoil";
+import { constSelector, useRecoilValue, useSetRecoilState } from "recoil";
 
 type Props = {
   id: number;
@@ -24,16 +26,25 @@ export const DraggableTeamBox = ({ id }: Props) => {
       : constSelector(null)
   );
 
+  const setIsTeamMemberBeingDraggedOverTeam = useSetRecoilState(
+    isTeamMemberDraggingOverDropZoneAtomFamily(DropZone.TEAM_BOX)
+  );
+
   const screen = CanvasStore.screen;
   const isInScreen = inBounds(teamBox, screen);
 
-  const [_, teamMemberDropRef] = useTeamMemberDrop(id);
+  const [{ isOverCurrent: isOverTeamBox }, teamMemberDropRef] =
+    useTeamMemberDrop(id);
 
   const [{ isDragging }, teamDragRef, teamDragPreview] = useTeamDrag(id);
 
   useEffect(() => {
     teamDragPreview(getEmptyImage(), { captureDraggingState: true });
   }, [teamDragPreview]);
+
+  useEffect(() => {
+    setIsTeamMemberBeingDraggedOverTeam(isOverTeamBox);
+  }, [isOverTeamBox, setIsTeamMemberBeingDraggedOverTeam]);
 
   return isInScreen ? (
     <div

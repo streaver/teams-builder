@@ -1,5 +1,5 @@
 import { TeamBoxDragPreview } from "@/components/team-box/TeamBoxDragPreview";
-import { TeamMemberAvatarDragPreview } from "@/components/team-member/avatar/TeamMemberAvatarDragPreview";
+import { TeamMemberDragPreview } from "@/components/team-member/TeamMemberDragPreview";
 import { TeamBoxDndItem } from "@/hooks/team-dnd";
 import { TeamMemberDndItem } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
@@ -40,7 +40,7 @@ export const CustomDragLayer = () => {
 
       case DraggableItemType.TEAM_MEMBER_AVATAR:
         const memberId = (item as TeamMemberDndItem).id;
-        return <TeamMemberAvatarDragPreview id={memberId} />;
+        return <TeamMemberDragPreview id={memberId} />;
 
       default:
         return null;
