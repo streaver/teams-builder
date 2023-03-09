@@ -12,13 +12,23 @@ export type TeamMemberDndItem = {
   id: TeamMember["id"];
 };
 
+export type TeamMemberDndCollectedProps = {
+  isDragging: boolean;
+};
+
 export const useTeamMemberDrag = (id: TeamMember["id"]) => {
-  return useDrag<TeamMemberDndItem>(() => ({
-    type: TEAM_MEMBER_AVATAR,
-    item: {
-      id,
-    },
-  }));
+  return useDrag<TeamMemberDndItem, unknown, TeamMemberDndCollectedProps>(
+    () => ({
+      type: TEAM_MEMBER_AVATAR,
+      item: {
+        id,
+      },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }),
+    [id]
+  );
 };
 
 export const useTeamMemberDrop = (teamId: Team["id"] | null) => {
