@@ -1,11 +1,10 @@
-import { Bench } from "@/components/Bench";
 import { AUTHENTICATION_COOKIE_NAME } from "@/pages/api/sign-in";
 import { RecoilProvider } from "@/providers/RecoilProvider";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const DynamicInfiniteCanvas = dynamic(
   () => import("@/components/InfiniteCanvas"),
@@ -13,6 +12,10 @@ const DynamicInfiniteCanvas = dynamic(
     ssr: false,
   }
 );
+
+const DynamicBench = dynamic(() => import("@/components/Bench"), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
@@ -31,7 +34,7 @@ export default function Home() {
           <DndProvider backend={HTML5Backend}>
             <DynamicInfiniteCanvas />
             <div className="w-1/5 shrink-0" />
-            <Bench />
+            <DynamicBench />
           </DndProvider>
         </div>
       </RecoilProvider>

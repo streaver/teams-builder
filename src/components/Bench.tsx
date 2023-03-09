@@ -6,7 +6,7 @@ import { DraggableItemType } from "@/utils/dnd";
 import classNames from "classnames";
 import { useRecoilValue } from "recoil";
 
-export const Bench = () => {
+const Bench = () => {
   const membersIds = useRecoilValue(teamMemberIdsSelectorFamily(null));
   const itemTypeBeingDragged = useRecoilValue(itemTypeBeingDraggedAtom);
 
@@ -32,3 +32,5 @@ export const Bench = () => {
     </div>
   );
 };
+
+export default Bench;
