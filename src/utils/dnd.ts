@@ -11,6 +11,7 @@ export enum DropZone {
   CANVAS = "canvas",
   TEAM_BOX = "team_box",
   CANVAS_EDGE = "canvas_edge",
+  BENCH = "bench",
 }
 
 export const getPositionAfterDrop = ({
