@@ -12,7 +12,7 @@ export const TeamBoxDragPreview = ({ id }: Props) => {
 
   return (
     <div
-      className="relative bg-purple-100 border-2 border-purple-400 border-dashed rounded-3xl"
+      className="relative border-2 border-dashed bg-dam-blue-400 bg-opacity-[15%] border-dam-blue-400 rounded-3xl"
       style={{
         width: teamBox.width,
         height: teamBox.height,
