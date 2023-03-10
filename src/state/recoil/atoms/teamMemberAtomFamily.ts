@@ -9,5 +9,6 @@ export const teamMemberAtomFamily = atomFamily<TeamMember, TeamMember["id"]>({
     lastName: "",
     teamId: null,
     picture: "",
+    hours: 0,
   }),
 });

@@ -1,16 +1,14 @@
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
+import { TeamMember } from "@/types/Team";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
 
 type Props = {
-  id: number;
+  id: TeamMember["id"];
 };
-
-export const TEAM_MEMBER_AVATAR = "team_member_avatar";
 
 export const TeamMemberAvatar = ({ id }: Props) => {
   const teamMember = useRecoilValue(teamMemberAtomFamily(id));
-
   const shortName = `${teamMember.firstName} ${teamMember.lastName[0]}.`;
 
   return (
