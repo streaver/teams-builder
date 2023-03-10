@@ -1,9 +1,11 @@
 import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
+import { teamColorSelectorFamily } from "@/state/recoil/selectors/teamColorSelectorFamily";
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { Team, TeamMember } from "@/types/Team";
 import { TEAM_PADDING } from "@/utils/constants";
 import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
+import tinycolor from "tinycolor2";
 import { DraggableTeamMember } from "../team-member/DraggableTeamMember";
 
 type Props = {
@@ -13,6 +15,10 @@ type Props = {
 export const TeamBox = ({ id }: Props) => {
   const team = useRecoilValue(teamAtomFamily(id));
   const teamMembers = useRecoilValue(teamMembersSelectorFamily(id));
+  const teamColor = useRecoilValue(teamColorSelectorFamily(id));
+  const teamColorWithTransparency = tinycolor(teamColor)
+    .setAlpha(0.15)
+    .toRgbString();
 
   const [membersLeftCol, membersRightCol] = useMemo(() => {
     const teamMembersSorted = [...teamMembers].sort(
@@ -40,8 +46,12 @@ export const TeamBox = ({ id }: Props) => {
 
   return (
     <div
-      className="relative grid h-full grid-cols-2 gap-2"
-      style={{ padding: TEAM_PADDING }}
+      className="relative grid h-full grid-cols-2 gap-2 border-2 border-dashed rounded-3xl"
+      style={{
+        padding: TEAM_PADDING,
+        backgroundColor: teamColorWithTransparency,
+        borderColor: teamColor,
+      }}
     >
       <div className="flex flex-col h-full gap-2">
         {membersLeftCol.map((memberId) => (
