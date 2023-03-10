@@ -14,7 +14,7 @@ export const teamBoxSizeSelectorFamily = selectorFamily<Size, Team["id"]>({
 
       // For the time being, the width is constant and only its height is dynamic
       return {
-        witdh: DEFAULT_TEAM_BOX_WIDTH,
+        width: DEFAULT_TEAM_BOX_WIDTH,
         height: calculateTeamBoxHeight(teamMembers),
       };
     },

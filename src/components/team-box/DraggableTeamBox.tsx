@@ -3,13 +3,10 @@ import { useTeamDrag } from "@/hooks/team-dnd";
 import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
 import { isTeamMemberDraggingOverDropZoneAtomFamily } from "@/state/recoil/atoms/isTeamMemberDraggingOverDropZoneAtomFamily";
-<<<<<<< HEAD
 import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
-import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
-import { clientColorSelectorFamily } from "@/state/recoil/selectors/clientColorSelectorFamily";
-=======
 import { teamBoxPositionAtomFamily } from "@/state/recoil/atoms/teamBoxPositionAtomFamily";
->>>>>>> 621eebc (Renamed the teamBoxAtom since now it only contains the position of the box. Also simplified the initial position of the teams (though they might overlap for now))
+import { clientColorSelectorFamily } from "@/state/recoil/selectors/clientColorSelectorFamily";
+import { teamBoxSizeSelectorFamily } from "@/state/recoil/selectors/teamBoxSizeSelectorFamily";
 import { DropZone } from "@/utils/dnd";
 import { inBounds } from "@/utils/math-utils";
 import { useEffect } from "react";
@@ -22,24 +19,21 @@ type Props = {
 };
 
 export const DraggableTeamBox = ({ id }: Props) => {
-<<<<<<< HEAD
-  const teamBox = useRecoilValue(teamBoxAtomFamily(id));
+  const teamBoxPosition = useRecoilValue(teamBoxPositionAtomFamily(id));
+  const teamBoxSize = useRecoilValue(teamBoxSizeSelectorFamily(id));
   const team = useRecoilValue(teamAtomFamily(id));
   const teamColor = useRecoilValue(
     team.clientId !== null
       ? clientColorSelectorFamily(team.clientId)
       : constSelector(null)
   );
-=======
-  const teamBox = useRecoilValue(teamBoxPositionAtomFamily(id));
->>>>>>> 621eebc (Renamed the teamBoxAtom since now it only contains the position of the box. Also simplified the initial position of the teams (though they might overlap for now))
 
   const setIsTeamMemberBeingDraggedOverTeam = useSetRecoilState(
     isTeamMemberDraggingOverDropZoneAtomFamily(DropZone.TEAM_BOX)
   );
 
   const screen = CanvasStore.screen;
-  const isInScreen = inBounds(teamBox, screen);
+  const isInScreen = inBounds({ ...teamBoxPosition, ...teamBoxSize }, screen);
 
   const [{ isOverCurrent: isOverTeamBox }, teamMemberDropRef] =
     useTeamMemberDrop(id);
@@ -58,10 +52,9 @@ export const DraggableTeamBox = ({ id }: Props) => {
     <div
       className="absolute border-2 border-dashed rounded-3xl  bg-opacity-[15%] border-dam-blue-400"
       style={{
-        left: teamBox.x - screen.x,
-        top: teamBox.y - screen.y,
-        width: teamBox.width,
-        height: teamBox.height,
+        left: teamBoxPosition.x - screen.x,
+        top: teamBoxPosition.y - screen.y,
+        ...teamBoxSize,
         backgroundColor: teamColor || "transparent",
         opacity: isDragging ? 0 : 1,
       }}
