@@ -1,5 +1,5 @@
 import { TeamBox } from "@/components/team-box/TeamBox";
-import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
+import { teamBoxPositionAtomFamily } from "@/state/recoil/atoms/teamBoxPositionAtomFamily";
 import { Team } from "@/types/Team";
 import { useRecoilValue } from "recoil";
 
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const TeamBoxDragPreview = ({ id }: Props) => {
-  const teamBox = useRecoilValue(teamBoxAtomFamily(id));
+  const teamBox = useRecoilValue(teamBoxPositionAtomFamily(id));
 
   return (
     <div

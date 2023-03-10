@@ -1,5 +1,5 @@
 import CanvasStore from "@/state/CanvasStore";
-import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
+import { teamBoxPositionAtomFamily } from "@/state/recoil/atoms/teamBoxPositionAtomFamily";
 import { teamIdsAtom } from "@/state/recoil/atoms/teamIdsAtom";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
@@ -42,7 +42,7 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
     ({ set }) =>
       (newTeamId: Team["id"], position: XYCoord) => {
         set(teamIdsAtom, (teamIds) => [...teamIds, newTeamId] as number[]);
-        set(teamBoxAtomFamily(newTeamId), (teamBox) => ({
+        set(teamBoxPositionAtomFamily(newTeamId), (teamBox) => ({
           ...teamBox,
           ...position,
         }));
@@ -62,7 +62,7 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
           const targetTeamMembers = [...teamMembers, teamMember];
           const targetTeamBoxHeight = calculateTeamBoxHeight(targetTeamMembers);
 
-          set(teamBoxAtomFamily(newTeamId), (currentData) => ({
+          set(teamBoxPositionAtomFamily(newTeamId), (currentData) => ({
             ...currentData,
             height: targetTeamBoxHeight,
           }));
@@ -79,7 +79,7 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
           );
           const sourceTeamBoxHeight = calculateTeamBoxHeight(sourceTeamMembers);
 
-          set(teamBoxAtomFamily(teamMember.teamId), (currentData) => ({
+          set(teamBoxPositionAtomFamily(teamMember.teamId), (currentData) => ({
             ...currentData,
             height: sourceTeamBoxHeight,
           }));
