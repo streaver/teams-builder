@@ -34,10 +34,7 @@ export const useTeamDrop = () => {
   const handleTeamDrop = useRecoilCallback(
     ({ set }) =>
       (teamId: Team["id"], position: XYCoord) => {
-        set(teamBoxPositionAtomFamily(teamId), (teamBox) => ({
-          ...teamBox,
-          ...position,
-        }));
+        set(teamBoxPositionAtomFamily(teamId), position);
       },
     []
   );
