@@ -5,16 +5,13 @@ import { teamBoxPositionAtomFamily } from "@/state/recoil/atoms/teamBoxPositionA
 import { teamIdsAtom } from "@/state/recoil/atoms/teamIdsAtom";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import { teamMemberIdsAtom } from "@/state/recoil/atoms/teamMemberIdsAtom";
-import { Team, TeamMember } from "@/types/Team";
-<<<<<<< HEAD
 import { Client } from "@/types/Client";
+import { Team, TeamMember } from "@/types/Team";
 
-=======
->>>>>>> 621eebc (Renamed the teamBoxAtom since now it only contains the position of the box. Also simplified the initial position of the teams (though they might overlap for now))
 import {
   DEFAULT_GAP_BETWEEN_TEAM_BOXES,
   DEFAULT_TEAM_BOX_HEIGHT,
-  DEFAULT_TEAM_BOX_WIDTH
+  DEFAULT_TEAM_BOX_WIDTH,
 } from "@/utils/constants";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { MutableSnapshot, RecoilRoot } from "recoil";
@@ -41,29 +38,23 @@ export const RecoilProvider = ({ children }: PropsWithChildren) => {
     const teamMemberIds = teamMembers.map((teamMember) => teamMember.id);
     const clientIds = clients.map((client) => client.id);
 
+    // Init teamids, memberIds and clientIds.
     set(teamIdsAtom, teamIds);
     set(teamMemberIdsAtom, teamMemberIds);
-
-    // Initialize the clientIds atom
     set(clientIdsAtom, clientIds);
 
-    // Initilize the teamMembers atoms
+    // Init team-members, teams and clients.
     teamMembers.forEach((teamMember) => {
       set(teamMemberAtomFamily(teamMember.id), teamMember);
     });
-
-    // Initilize the team atoms
     teams.forEach((team) => {
       set(teamAtomFamily(team.id), team);
     });
-
-    // Initilize the clients atoms
     clients.forEach((client) => {
       set(clientAtomFamily(client.id), client);
     });
 
-    // For each team, set its original position in the canvas
-    // Initially they'll be displayed in a n*3 grid (n rows, 3 colums).
+    // Init the position of each team in the canvas.
     teamIds.forEach((id, index) => {
       set(teamBoxPositionAtomFamily(id), {
         x:
