@@ -1,5 +1,5 @@
 import { TeamBox } from "@/components/team-box/TeamBox";
-import { teamBoxPositionAtomFamily } from "@/state/recoil/atoms/teamBoxPositionAtomFamily";
+import { teamBoxSizeSelectorFamily } from "@/state/recoil/selectors/teamBoxSizeSelectorFamily";
 import { Team } from "@/types/Team";
 import { useRecoilValue } from "recoil";
 
@@ -8,15 +8,12 @@ type Props = {
 };
 
 export const TeamBoxDragPreview = ({ id }: Props) => {
-  const teamBox = useRecoilValue(teamBoxPositionAtomFamily(id));
+  const teamBoxSize = useRecoilValue(teamBoxSizeSelectorFamily(id));
 
   return (
     <div
       className="relative bg-purple-100 border-2 border-purple-400 border-dashed rounded-3xl"
-      style={{
-        width: teamBox.width,
-        height: teamBox.height,
-      }}
+      style={{ ...teamBoxSize }}
     >
       <TeamBox id={id} />
     </div>

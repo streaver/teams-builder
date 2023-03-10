@@ -40,10 +40,7 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
     ({ set }) =>
       (newTeamId: Team["id"], position: XYCoord) => {
         set(teamIdsAtom, (teamIds) => [...teamIds, newTeamId] as number[]);
-        set(teamBoxPositionAtomFamily(newTeamId), (teamBox) => ({
-          ...teamBox,
-          ...position,
-        }));
+        set(teamBoxPositionAtomFamily(newTeamId), position);
       },
     []
   );
