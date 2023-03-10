@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { mergeRefs } from "react-merge-refs";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import tinycolor from "tinycolor2";
 
 type Props = {
   id: number;
@@ -21,6 +22,9 @@ export const DraggableTeamBox = ({ id }: Props) => {
   const teamBoxPosition = useRecoilValue(teamBoxPositionAtomFamily(id));
   const teamBoxSize = useRecoilValue(teamBoxSizeSelectorFamily(id));
   const teamColor = useRecoilValue(teamColorSelectorFamily(id));
+  const teamColorWithTransparency = tinycolor(teamColor)
+    .setAlpha(0.15)
+    .toRgbString();
 
   const setIsTeamMemberBeingDraggedOverTeam = useSetRecoilState(
     isTeamMemberDraggingOverDropZoneAtomFamily(DropZone.TEAM_BOX)
@@ -49,7 +53,7 @@ export const DraggableTeamBox = ({ id }: Props) => {
         left: teamBoxPosition.x - screen.x,
         top: teamBoxPosition.y - screen.y,
         ...teamBoxSize,
-        backgroundColor: teamColor,
+        backgroundColor: teamColorWithTransparency,
         borderColor: teamColor,
         opacity: isDragging ? 0 : 1,
       }}
