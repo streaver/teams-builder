@@ -2,11 +2,9 @@ import CanvasStore from "@/state/CanvasStore";
 import { teamBoxPositionAtomFamily } from "@/state/recoil/atoms/teamBoxPositionAtomFamily";
 import { teamIdsAtom } from "@/state/recoil/atoms/teamIdsAtom";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
-import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { Team, TeamMember } from "@/types/Team";
 import { DraggableItemType, getPositionAfterDrop } from "@/utils/dnd";
 import { randomTeamId } from "@/utils/team-utils";
-import { calculateTeamBoxHeight } from "@/utils/teams-utils";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { useRecoilCallback } from "recoil";
 
@@ -50,61 +48,15 @@ export const useTeamMemberDrop = (teamId: Team["id"] | null | "NEW_TEAM") => {
     []
   );
 
-  const updatePrevAndNewTeamHeights = useRecoilCallback(
-    ({ set, snapshot }) =>
-      async (newTeamId: Team["id"] | null, teamMember: TeamMember) => {
-        // If the new team is not the bench we need to update its height
-        if (newTeamId !== null) {
-          const teamMembers = await snapshot.getPromise(
-            teamMembersSelectorFamily(newTeamId)
-          );
-
-          const targetTeamMembers = [...teamMembers, teamMember];
-          const targetTeamBoxHeight = calculateTeamBoxHeight(targetTeamMembers);
-
-          set(teamBoxPositionAtomFamily(newTeamId), (currentData) => ({
-            ...currentData,
-            height: targetTeamBoxHeight,
-          }));
-        }
-
-        // If the previous team wasn't the bench, we need to update its height as well.
-        if (teamMember.teamId !== null) {
-          const teamMembers = await snapshot.getPromise(
-            teamMembersSelectorFamily(teamMember.teamId)
-          );
-
-          const sourceTeamMembers = teamMembers.filter(
-            (m) => m.id !== teamMember.id
-          );
-          const sourceTeamBoxHeight = calculateTeamBoxHeight(sourceTeamMembers);
-
-          set(teamBoxPositionAtomFamily(teamMember.teamId), (currentData) => ({
-            ...currentData,
-            height: sourceTeamBoxHeight,
-          }));
-        }
-      },
-    []
-  );
-
   const moveTeamMemberIntoTeam = useRecoilCallback(
-    ({ set, snapshot }) =>
+    ({ set }) =>
       async (teamMemberId: TeamMember["id"], teamId: Team["id"] | null) => {
-        const teamMember = await snapshot.getPromise(
-          teamMemberAtomFamily(teamMemberId)
-        );
-
-        if (teamMember.teamId !== teamId) {
-          updatePrevAndNewTeamHeights(teamId, teamMember);
-        }
-
         set(teamMemberAtomFamily(teamMemberId), (member) => ({
           ...member,
           teamId,
         }));
       },
-    [updatePrevAndNewTeamHeights]
+    []
   );
 
   return useDrop<TeamMemberDndItem, unknown, TeamMemberDropCollectedProps>(
