@@ -2,12 +2,14 @@ import { TeamBox } from "@/components/team-box/TeamBox";
 import { useTeamDrag } from "@/hooks/team-dnd";
 import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
+import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
 import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
+import { clientColorSelectorFamily } from "@/state/recoil/selectors/clientColorSelectorFamily";
 import { inBounds } from "@/utils/math-utils";
 import { useEffect } from "react";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { mergeRefs } from "react-merge-refs";
-import { useRecoilValue } from "recoil";
+import { constSelector, useRecoilValue } from "recoil";
 
 type Props = {
   id: number;
@@ -15,6 +17,12 @@ type Props = {
 
 export const DraggableTeamBox = ({ id }: Props) => {
   const teamBox = useRecoilValue(teamBoxAtomFamily(id));
+  const team = useRecoilValue(teamAtomFamily(id));
+  const teamColor = useRecoilValue(
+    team.clientId !== null
+      ? clientColorSelectorFamily(team.clientId)
+      : constSelector(null)
+  );
 
   const screen = CanvasStore.screen;
   const isInScreen = inBounds(teamBox, screen);
@@ -29,12 +37,13 @@ export const DraggableTeamBox = ({ id }: Props) => {
 
   return isInScreen ? (
     <div
-      className="absolute border-2 border-dashed rounded-3xl bg-dam-blue-400 bg-opacity-[15%] border-dam-blue-400"
+      className="absolute border-2 border-dashed rounded-3xl  bg-opacity-[15%] border-dam-blue-400"
       style={{
         left: teamBox.x - screen.x,
         top: teamBox.y - screen.y,
         width: teamBox.width,
         height: teamBox.height,
+        backgroundColor: teamColor || "transparent",
         opacity: isDragging ? 0 : 1,
       }}
       ref={mergeRefs([teamDragRef, teamMemberDropRef])}

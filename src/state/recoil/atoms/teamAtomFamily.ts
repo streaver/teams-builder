@@ -6,5 +6,6 @@ export const teamAtomFamily = atomFamily<Team, Team["id"]>({
   default: (id) => ({
     id,
     name: "",
+    clientId: null,
   }),
 });
