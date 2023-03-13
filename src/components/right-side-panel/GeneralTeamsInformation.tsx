@@ -1,22 +1,25 @@
 import { clientIdsAtom } from "@/state/recoil/atoms/clientIdsAtom";
 import { teamMembersByWorkingHoursSelectorFamily } from "@/state/recoil/selectors/teamMembersByWorkingHoursSelectorFamily";
+import { WorkingHours } from "@/utils/team-members-utils";
 import { useRecoilValue } from "recoil";
 import { BenchInfo } from "./BenchInfo";
 import { ClientTeamsInfo } from "./ClientTeamsInfo";
 
 export const GeneralTeamsInformation = () => {
   const fullTimeMembers = useRecoilValue(
-    teamMembersByWorkingHoursSelectorFamily(8)
+    teamMembersByWorkingHoursSelectorFamily(WorkingHours.FULL_TIME)
   );
   const partTimeMembers = useRecoilValue(
-    teamMembersByWorkingHoursSelectorFamily(6)
+    teamMembersByWorkingHoursSelectorFamily(WorkingHours.PART_TIME)
   );
   const quartTimemembers = useRecoilValue(
-    teamMembersByWorkingHoursSelectorFamily(4)
+    teamMembersByWorkingHoursSelectorFamily(WorkingHours.QUART_TIME)
   );
 
   const numOfFullTimesFromPartials = Math.floor(
-    (partTimeMembers.length * 6 + quartTimemembers.length * 4) / 8
+    (partTimeMembers.length * WorkingHours.PART_TIME +
+      quartTimemembers.length * WorkingHours.QUART_TIME) /
+      WorkingHours.FULL_TIME
   );
 
   const clientIds = useRecoilValue(clientIdsAtom);

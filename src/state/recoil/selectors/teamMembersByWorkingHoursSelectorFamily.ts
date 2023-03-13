@@ -1,4 +1,5 @@
-import { TeamMember, WorkingHours } from "@/types/Team";
+import { TeamMember } from "@/types/Team";
+import { WorkingHours } from "@/utils/team-members-utils";
 import { selectorFamily } from "recoil";
 import { teamMemberAtomFamily } from "../atoms/teamMemberAtomFamily";
 import { teamMemberIdsAtom } from "../atoms/teamMemberIdsAtom";

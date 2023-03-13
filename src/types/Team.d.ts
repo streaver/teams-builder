@@ -1,12 +1,11 @@
 import { Client } from "@/types/Client";
+import { WorkingHours } from "@/utils/team-members-utils";
 
 export type Team = {
   id: number;
   name: string;
   clientId: Client["id"] | null;
 };
-
-export type WorkingHours = 8 | 6 | 4;
 
 export type TeamMember = {
   id: number;
