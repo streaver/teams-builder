@@ -31,7 +31,7 @@ export default function Home() {
         <link rel="icon" href="/dam.png" />
       </Head>
       <RecoilProvider>
-        <div className="flex w-full h-full gap-4">
+        <div className="flex w-full h-full">
           <DndProvider backend={HTML5Backend}>
             <DynamicInfiniteCanvas />
             <RightSidePanel />

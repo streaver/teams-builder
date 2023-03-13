@@ -22,7 +22,7 @@ export const GeneralTeamsInformation = () => {
   const clientIds = useRecoilValue(clientIdsAtom);
 
   return (
-    <div className="flex flex-col items-stretch gap-4 p-4 text-sm divide-y">
+    <div className="flex flex-col h-full items-stretch gap-4 p-4 text-sm divide-y bg-gradient-to-r from-dam-blue-400/[15%] to-transparent rounded-3xl">
       <div className="flex flex-col items-center gap-4">
         <h1 className="font-bold">Engineering team</h1>
         <p>{fullTimeMembers.length} Full-Time</p>
