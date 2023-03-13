@@ -11,10 +11,7 @@ export const TeamBoxDragPreview = ({ id }: Props) => {
   const teamBoxSize = useRecoilValue(teamBoxSizeSelectorFamily(id));
 
   return (
-    <div
-      className="relative bg-purple-100 border-2 border-purple-400 border-dashed rounded-3xl"
-      style={{ ...teamBoxSize }}
-    >
+    <div style={{ ...teamBoxSize }}>
       <TeamBox id={id} />
     </div>
   );
