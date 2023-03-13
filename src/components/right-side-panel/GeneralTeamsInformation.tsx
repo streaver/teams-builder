@@ -1,7 +1,8 @@
+import { clientIdsAtom } from "@/state/recoil/atoms/clientIdsAtom";
 import { teamMembersByWorkingHoursSelectorFamily } from "@/state/recoil/selectors/teamMembersByWorkingHoursSelectorFamily";
-import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
-import Fraction from "fraction.js";
 import { useRecoilValue } from "recoil";
+import { BenchInfo } from "./BenchInfo";
+import { ClientTeamsInfo } from "./ClientTeamsInfo";
 
 export const GeneralTeamsInformation = () => {
   const fullTimeMembers = useRecoilValue(
@@ -18,19 +19,7 @@ export const GeneralTeamsInformation = () => {
     (partTimeMembers.length * 6 + quartTimemembers.length * 4) / 8
   );
 
-  const benchedMembers = useRecoilValue(teamMembersSelectorFamily(null));
-  const benchWorkingHours = benchedMembers.reduce((workingHours, teamMeber) => {
-    return workingHours + teamMeber.hours;
-  }, 0);
-
-  const benchFullTimes = Math.floor(benchWorkingHours / 8);
-  const benchFullTimesFromPartials = new Fraction(
-    (benchWorkingHours % 8) / 8
-  ).toFraction();
-
-  const benchFullTimesText = `${benchFullTimes > 0 ? benchFullTimes : ""} ${
-    benchFullTimesFromPartials !== "0" ? ` ${benchFullTimesFromPartials}` : ""
-  }`;
+  const clientIds = useRecoilValue(clientIdsAtom);
 
   return (
     <div className="flex flex-col items-stretch gap-4 p-4 text-sm divide-y">
@@ -44,12 +33,13 @@ export const GeneralTeamsInformation = () => {
         </p>
       </div>
       <div className="flex flex-col items-center gap-4 pt-4">
-        <p>
-          Bench size: {benchedMembers.length}{" "}
-          {benchedMembers.length > 0
-            ? `(${benchFullTimesText} Full-Time)`
-            : null}
-        </p>
+        <BenchInfo />
+        <div className="flex flex-col gap-2 text-center">
+          <p className="font-medium">Clients:</p>
+          {clientIds.map((clientId) => (
+            <ClientTeamsInfo key={clientId} id={clientId} />
+          ))}
+        </div>
       </div>
     </div>
   );
