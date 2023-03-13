@@ -1,4 +1,4 @@
-import { RightSidePanel } from "@/components/RightSidePanel";
+import { RightSidePanel } from "@/components/right-side-panel/RightSidePanel";
 import { AUTHENTICATION_COOKIE_NAME } from "@/pages/api/sign-in";
 import { RecoilProvider } from "@/providers/RecoilProvider";
 import { GetServerSideProps } from "next";
