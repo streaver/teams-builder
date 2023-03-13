@@ -8,14 +8,19 @@ export const MEMBER_WIDTH = 145;
 export const MEMBER_HEIGHT = 145;
 export const MEMBER_BORDER = 2;
 
-// Team boxes constants
+// The padding of each team box
 export const TEAM_PADDING = 8;
+
+// The gap between team members within a team box
 export const TEAM_GAP = 8;
 
-// 3x3 grid
-export const GRID_COLS = 3;
-export const GRID_GAP = 64;
+// The initial gap between team boxes within the canvas
+export const DEFAULT_GAP_BETWEEN_TEAM_BOXES = 64;
 
-// Team box Height
+// The initial height of a team box
 export const DEFAULT_TEAM_BOX_HEIGHT =
   MEMBER_HEIGHT * 2 + MEMBER_BORDER * 2 + TEAM_PADDING * 2 + TEAM_GAP;
+
+// The initial width of a team box.
+export const DEFAULT_TEAM_BOX_WIDTH =
+  2 * MEMBER_WIDTH + 2 * TEAM_PADDING + 2 * MEMBER_BORDER + TEAM_GAP;

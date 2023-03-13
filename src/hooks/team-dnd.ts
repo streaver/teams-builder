@@ -1,5 +1,5 @@
 import CanvasStore from "@/state/CanvasStore";
-import { teamBoxAtomFamily } from "@/state/recoil/atoms/teamBoxAtomFamily";
+import { teamBoxPositionAtomFamily } from "@/state/recoil/atoms/teamBoxPositionAtomFamily";
 import { Team } from "@/types/Team";
 import { DraggableItemType, getPositionAfterDrop } from "@/utils/dnd";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
@@ -34,10 +34,7 @@ export const useTeamDrop = () => {
   const handleTeamDrop = useRecoilCallback(
     ({ set }) =>
       (teamId: Team["id"], position: XYCoord) => {
-        set(teamBoxAtomFamily(teamId), (teamBox) => ({
-          ...teamBox,
-          ...position,
-        }));
+        set(teamBoxPositionAtomFamily(teamId), position);
       },
     []
   );
