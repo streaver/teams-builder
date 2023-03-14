@@ -25,23 +25,27 @@ export const TeamsDetails = () => {
   const clientIds = useRecoilValue(clientIdsAtom);
 
   return (
-    <div className="flex flex-col h-full items-stretch gap-4 p-4 text-sm divide-y bg-gradient-to-r from-dam-blue-400/[15%] to-transparent rounded-3xl">
-      <div className="flex flex-col items-center gap-4">
-        <h1 className="font-bold">Engineering team</h1>
-        <p>{fullTimeMembers.length} Full-Time</p>
-        <p>{partTimeMembers.length} Part-Time</p>
-        <p>{quartTimemembers.length} Quart-Time</p>
-        <p className="font-medium ">
-          means {numOfFullTimesFromPartials} Full-Time
-        </p>
+    <div className="flex flex-col items-stretch h-full gap-8 divide-y divide-dam-gray-200">
+      <div className="flex flex-col items-center gap-8">
+        <h1 className="font-bold text-center">Engineering team</h1>
+        <div className="flex flex-col items-center gap-4">
+          <p>{fullTimeMembers.length} Full-Time</p>
+          <p>{partTimeMembers.length} Part-Time</p>
+          <p>{quartTimemembers.length} Quart-Time</p>
+          <p className="font-medium ">
+            means {numOfFullTimesFromPartials} Full-Time
+          </p>
+        </div>
       </div>
-      <div className="flex flex-col items-center gap-4 pt-4">
+      <div className="flex flex-col items-center gap-8 pt-8">
         <BenchDetails />
         <div className="flex flex-col gap-2 text-center">
           <p className="font-medium">Clients:</p>
-          {clientIds.map((clientId) => (
-            <ClientTeamsSummary key={clientId} id={clientId} />
-          ))}
+          <ul>
+            {clientIds.map((clientId) => (
+              <ClientTeamsSummary key={clientId} id={clientId} />
+            ))}
+          </ul>
         </div>
       </div>
     </div>

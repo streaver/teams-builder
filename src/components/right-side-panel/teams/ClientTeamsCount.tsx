@@ -8,8 +8,8 @@ export const ClientTeamsSummary = ({ id }: { id: Client["id"] }) => {
   const clientTeams = useRecoilValue(clientTeamsSelectorFamily(id));
 
   return (
-    <p>
+    <li>
       {client.name}: ({clientTeams.length} teams)
-    </p>
+    </li>
   );
 };

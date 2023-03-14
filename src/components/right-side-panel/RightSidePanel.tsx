@@ -12,10 +12,13 @@ export const RightSidePanel = () => {
 
   return (
     <div
-      className={classNames("relative shrink-0 h-full transition-[width]", {
-        "w-16": !isExpanded,
-        "w-1/5 ml-4": isExpanded,
-      })}
+      className={classNames(
+        "relative shrink-0 transition-[width] h-full px-4 py-8 text-sm border-2 rounded-3xl border-dashed border-dam-gray-400 bg-dam-gray-400/[15%]",
+        {
+          "w-16": !isExpanded,
+          "w-1/5 ml-4": isExpanded,
+        }
+      )}
     >
       {isExpanded ? <RightSidePanelContent /> : null}
       <button
