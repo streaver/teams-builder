@@ -48,7 +48,7 @@ export const TeamBox = ({ id }: Props) => {
 
   return (
     <div
-      className="relative grid items-center justify-center h-full grid-cols-2 border-dashed rounded-3xl"
+      className="relative grid h-full grid-cols-2 border-dashed rounded-3xl"
       style={{
         padding: TEAM_PADDING,
         gap: TEAM_GAP,
