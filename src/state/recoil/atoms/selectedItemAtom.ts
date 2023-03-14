@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-type SelectedItem = {
+export type SelectedItem = {
   id: number;
   type: "team" | "team-member";
 };
