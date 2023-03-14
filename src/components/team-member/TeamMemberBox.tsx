@@ -8,6 +8,7 @@ import {
   PART_TIME_MEMBER_HEIGHT,
   QUART_TIME_MEMBER_HEIGHT,
 } from "@/utils/constants";
+import { WorkingHours } from "@/utils/team-members-utils";
 import { useRecoilValue } from "recoil";
 import tinycolor from "tinycolor2";
 import { TeamMemberAvatar } from "./avatar/TeamMemberAvatar";
@@ -16,15 +17,15 @@ type Props = {
   id: TeamMember["id"];
 };
 
+const WORKINGHOURS_HEIGHT = {
+  [WorkingHours.FULL_TIME]: FULL_TIME_MEMBER_HEIGHT,
+  [WorkingHours.PART_TIME]: PART_TIME_MEMBER_HEIGHT,
+  [WorkingHours.QUART_TIME]: QUART_TIME_MEMBER_HEIGHT,
+};
+
 export const TeamMemberBox = ({ id }: Props) => {
   const member = useRecoilValue(teamMemberAtomFamily(id));
-
-  const height =
-    member.hours === 8
-      ? FULL_TIME_MEMBER_HEIGHT
-      : member.hours === 6
-      ? PART_TIME_MEMBER_HEIGHT
-      : QUART_TIME_MEMBER_HEIGHT;
+  const height = WORKINGHOURS_HEIGHT[member.hours];
 
   // The member always has a team at this point.
   const teamColor = useRecoilValue(teamColorSelectorFamily(member.teamId!));
