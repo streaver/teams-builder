@@ -6,6 +6,7 @@ import {
   TEAM_GAP,
   TEAM_PADDING,
 } from "./constants";
+import { WorkingHours } from "./team-members-utils";
 
 export const calculateTeamBoxHeight = (teamMembers: TeamMember[]): number => {
   const teamMembersSorted = [...teamMembers].sort(
@@ -28,15 +29,14 @@ export const calculateTeamBoxHeight = (teamMembers: TeamMember[]): number => {
       ? totalHoursLeftCol
       : totalHoursRightCol;
 
-  const rowsNeeded = Math.ceil(highestCol / 8);
+  const rowsNeeded = Math.ceil(highestCol / WorkingHours.FULL_TIME);
 
   const totalHeight =
     rowsNeeded * FULL_TIME_MEMBER_HEIGHT +
     (rowsNeeded - 1) * TEAM_GAP +
-    2 * TEAM_PADDING +
-    2 * TEAM_BORDER;
+    2 * (TEAM_PADDING + TEAM_BORDER);
 
-  // If the new height < default height (2x2), totalheigth = default height
+  // If the member-based height < default height (2x2), returns the default height.
   return totalHeight < DEFAULT_TEAM_BOX_HEIGHT
     ? DEFAULT_TEAM_BOX_HEIGHT
     : totalHeight;
