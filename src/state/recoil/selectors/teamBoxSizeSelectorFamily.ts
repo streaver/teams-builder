@@ -1,7 +1,7 @@
 import { Size } from "@/types/Box";
 import { Team } from "@/types/Team";
 import { DEFAULT_TEAM_BOX_WIDTH } from "@/utils/constants";
-import { calculateTeamBoxHeight } from "@/utils/teams-utils";
+import { calculateTeamBoxHeight } from "@/utils/team-utils";
 import { selectorFamily } from "recoil";
 import { teamMembersSelectorFamily } from "./teamMembersSelectorFamily";
 

@@ -46,7 +46,6 @@ export const DraggableTeamBox = ({ id }: Props) => {
       style={{
         left: teamBoxPosition.x - screen.x,
         top: teamBoxPosition.y - screen.y,
-        ...teamBoxSize,
         opacity: isDragging ? 0 : 1,
       }}
       ref={mergeRefs([teamDragRef, teamMemberDropRef])}

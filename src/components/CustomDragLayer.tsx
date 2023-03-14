@@ -1,4 +1,3 @@
-import { TeamBoxDragPreview } from "@/components/team-box/TeamBoxDragPreview";
 import { TeamMemberDragPreview } from "@/components/team-member/TeamMemberDragPreview";
 import { TeamBoxDndItem } from "@/hooks/team-dnd";
 import { TeamMemberDndItem } from "@/hooks/team-members-dnd";
@@ -9,6 +8,7 @@ import { applyReverseScale } from "@/utils/math-utils";
 import { useEffect } from "react";
 import { useDragLayer } from "react-dnd";
 import { useSetRecoilState } from "recoil";
+import { TeamBox } from "./team-box/TeamBox";
 
 export const CustomDragLayer = () => {
   const setItemTypeBeingDragged = useSetRecoilState(itemTypeBeingDraggedAtom);
@@ -36,7 +36,7 @@ export const CustomDragLayer = () => {
     switch (itemType) {
       case DraggableItemType.TEAM_BOX:
         const teamId = (item as TeamBoxDndItem).teamId;
-        return <TeamBoxDragPreview id={teamId} />;
+        return <TeamBox id={teamId} />;
 
       case DraggableItemType.TEAM_MEMBER_AVATAR:
         const memberId = (item as TeamMemberDndItem).id;
