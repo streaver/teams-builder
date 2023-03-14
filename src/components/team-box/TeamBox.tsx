@@ -1,8 +1,9 @@
 import { teamAtomFamily } from "@/state/recoil/atoms/teamAtomFamily";
+import { teamBoxSizeSelectorFamily } from "@/state/recoil/selectors/teamBoxSizeSelectorFamily";
 import { teamColorSelectorFamily } from "@/state/recoil/selectors/teamColorSelectorFamily";
 import { teamMembersSelectorFamily } from "@/state/recoil/selectors/teamMembersSelectorFamily";
 import { Team, TeamMember } from "@/types/Team";
-import { TEAM_PADDING } from "@/utils/constants";
+import { TEAM_BORDER, TEAM_GAP, TEAM_PADDING } from "@/utils/constants";
 import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
 import tinycolor from "tinycolor2";
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export const TeamBox = ({ id }: Props) => {
+  const teamBoxSize = useRecoilValue(teamBoxSizeSelectorFamily(id));
   const team = useRecoilValue(teamAtomFamily(id));
   const teamMembers = useRecoilValue(teamMembersSelectorFamily(id));
   const teamColor = useRecoilValue(teamColorSelectorFamily(id));
@@ -46,19 +48,32 @@ export const TeamBox = ({ id }: Props) => {
 
   return (
     <div
-      className="relative grid h-full grid-cols-2 gap-2 border-2 border-dashed rounded-3xl"
+      className="relative grid items-center justify-center h-full grid-cols-2 border-dashed rounded-3xl"
       style={{
         padding: TEAM_PADDING,
+        gap: TEAM_GAP,
+        borderWidth: TEAM_BORDER,
         backgroundColor: teamColorWithTransparency,
         borderColor: teamColor,
+        ...teamBoxSize,
       }}
     >
-      <div className="flex flex-col h-full gap-2">
+      <div
+        className="flex flex-col h-full"
+        style={{
+          gap: TEAM_GAP,
+        }}
+      >
         {membersLeftCol.map((memberId) => (
           <DraggableTeamMember key={memberId} id={memberId} withSurrondingBox />
         ))}
       </div>
-      <div className="flex flex-col h-full gap-2">
+      <div
+        className="flex flex-col h-full"
+        style={{
+          gap: TEAM_GAP,
+        }}
+      >
         {membersRightCol.map((memberId) => (
           <DraggableTeamMember key={memberId} id={memberId} withSurrondingBox />
         ))}
