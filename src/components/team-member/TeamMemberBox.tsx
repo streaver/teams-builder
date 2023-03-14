@@ -1,4 +1,6 @@
+import { selectedItemAtom } from "@/state/recoil/atoms/selectedItemAtom";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
+import { isTeamMemberSelectedSelectorFamily } from "@/state/recoil/selectors/isTeamMemberSelectedSelectorFamily";
 import { teamColorSelectorFamily } from "@/state/recoil/selectors/teamColorSelectorFamily";
 import { TeamMember } from "@/types/Team";
 import {
@@ -9,7 +11,9 @@ import {
   QUART_TIME_MEMBER_HEIGHT,
 } from "@/utils/constants";
 import { WorkingHours } from "@/utils/team-members-utils";
-import { useRecoilValue } from "recoil";
+import classNames from "classnames";
+import React from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import tinycolor from "tinycolor2";
 import { TeamMemberAvatar } from "./avatar/TeamMemberAvatar";
 
@@ -23,19 +27,40 @@ const WORKINGHOURS_HEIGHT = {
   [WorkingHours.QUART_TIME]: QUART_TIME_MEMBER_HEIGHT,
 };
 
+const TEAM_MEMBER_CLASSNAME = "team-member";
+export const TEAM_MEMBER_SELECTOR = `.${TEAM_MEMBER_CLASSNAME}`;
+
 export const TeamMemberBox = ({ id }: Props) => {
+  const setSelectedItem = useSetRecoilState(selectedItemAtom);
+  const isSelected = useRecoilValue(isTeamMemberSelectedSelectorFamily(id));
+
   const member = useRecoilValue(teamMemberAtomFamily(id));
   const height = WORKINGHOURS_HEIGHT[member.hours];
 
   // The member always has a team at this point.
   const teamColor = useRecoilValue(teamColorSelectorFamily(member.teamId!));
   const teamColorWithTransparency = tinycolor(teamColor)
-    .setAlpha(0.15)
+    .setAlpha(isSelected ? 0.4 : 0.15)
     .toRgbString();
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Prevents the event bubbling
+    // We don't want the team box to be clicked, other wise it would override the selection.
+    e.stopPropagation();
+
+    setSelectedItem({ id, type: "team-member" });
+  };
 
   return (
     <div
-      className="flex flex-col items-center py-0.5 border-dashed rounded-3xl"
+      className={classNames(
+        TEAM_MEMBER_CLASSNAME,
+        "cursor-pointer flex flex-col items-center py-0.5 rounded-3xl",
+        {
+          "border-dashed": !isSelected,
+          "border-solid": isSelected,
+        }
+      )}
       style={{
         width: MEMBER_WIDTH,
         height,
@@ -43,6 +68,7 @@ export const TeamMemberBox = ({ id }: Props) => {
         backgroundColor: teamColorWithTransparency,
         borderColor: teamColor,
       }}
+      onClick={handleClick}
     >
       <TeamMemberAvatar id={id} />
     </div>

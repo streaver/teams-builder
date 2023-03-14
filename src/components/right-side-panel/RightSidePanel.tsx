@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import { useState } from "react";
-import { GeneralTeamsInformation } from "./GeneralTeamsInformation";
+import { RightSidePanelContent } from "./RightSidePanelContent";
 
 export const RightSidePanel = () => {
   const [isExpanded, setisExpanded] = useState(false);
@@ -12,12 +12,15 @@ export const RightSidePanel = () => {
 
   return (
     <div
-      className={classNames("relative shrink-0 h-full transition-[width]", {
-        "w-16": !isExpanded,
-        "w-1/5 ml-4": isExpanded,
-      })}
+      className={classNames(
+        "relative shrink-0 transition-[width] h-full px-4 py-8 text-sm border-2 rounded-3xl border-dashed border-dam-gray-400 bg-gray-50",
+        {
+          "w-16": !isExpanded,
+          "w-1/5 ml-4": isExpanded,
+        }
+      )}
     >
-      {isExpanded ? <GeneralTeamsInformation /> : null}
+      {isExpanded ? <RightSidePanelContent /> : null}
       <button
         onClick={toggleSidebar}
         className={classNames("absolute -translate-y-1/2 top-1/2", {

@@ -6,11 +6,14 @@ import { useTeamDrop } from "@/hooks/team-dnd";
 import { useTeamMemberDrop } from "@/hooks/team-members-dnd";
 import CanvasStore from "@/state/CanvasStore";
 import { isTeamMemberDraggingOverDropZoneAtomFamily } from "@/state/recoil/atoms/isTeamMemberDraggingOverDropZoneAtomFamily";
+import { selectedItemAtom } from "@/state/recoil/atoms/selectedItemAtom";
 import { DropZone } from "@/utils/dnd";
+import { isClickOutsideOf } from "@/utils/dom";
 import useSize from "@react-hook/size";
 import { PointerEvent, useCallback, useEffect, useRef } from "react";
 import { mergeRefs } from "react-merge-refs";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { TEAM_MEMBER_SELECTOR } from "./team-member/TeamMemberBox";
 
 const InfiniteCanvas = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -19,6 +22,15 @@ const InfiniteCanvas = () => {
   const setIsTeamMemberDraggingOverCanvas = useSetRecoilState(
     isTeamMemberDraggingOverDropZoneAtomFamily(DropZone.CANVAS)
   );
+  const resetSelectedItem = useResetRecoilState(selectedItemAtom);
+
+  // Resets the selected item whenver the user clicks outside of
+  // some specific targets within the canvas such as a team-member's box
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isClickOutsideOf(e, [TEAM_MEMBER_SELECTOR])) {
+      resetSelectedItem();
+    }
+  };
 
   // Measures the width & height of the canvas and initializes the CanvasStore.
   // Note: If the screen is resized, then the CanvasStore will reset.
@@ -57,14 +69,13 @@ const InfiniteCanvas = () => {
     }
   }, []);
 
-  const [_, teamDropRef] = useTeamDrop();
-
   const handlePointer = useCallback((event: PointerEvent) => {
     CanvasStore.movePointer(event.clientX, event.clientY);
   }, []);
 
   const frame = useRenderLoop(60);
 
+  const [_, teamDropRef] = useTeamDrop();
   const [{ isOverCurrent }, teamMemberDropRef] = useTeamMemberDrop("NEW_TEAM");
 
   useEffect(() => {
@@ -76,6 +87,7 @@ const InfiniteCanvas = () => {
       className="relative w-full h-full overflow-hidden border-2 border-dashed bg-dam-blue-400 bg-opacity-[15%] border-dam-blue-400 overscroll-none rounded-3xl"
       ref={mergeRefs([canvasRef, teamDropRef, teamMemberDropRef])}
       onPointerMove={handlePointer}
+      onClick={handleClick}
     >
       <CanvasEdgesDropZone />
       <CustomDragLayer />

@@ -3,7 +3,7 @@ import { WorkingHours } from "@/utils/team-members-utils";
 import Fraction from "fraction.js";
 import { useRecoilValue } from "recoil";
 
-export const BenchInfo = () => {
+export const BenchDetails = () => {
   const members = useRecoilValue(teamMembersSelectorFamily(null));
   const hours = members.reduce((workingHours, teamMeber) => {
     return workingHours + teamMeber.hours;
