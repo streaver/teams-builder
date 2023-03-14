@@ -1,6 +1,6 @@
 import { selectedItemAtom } from "@/state/recoil/atoms/selectedItemAtom";
 import { useRecoilValue } from "recoil";
-import { GeneralTeamsInformation } from "./GeneralTeamsInformation";
+import { TeamsDetails } from "./teams/TeamsDetails";
 
 export const RightSidePanelContent = () => {
   const selectedItem = useRecoilValue(selectedItemAtom);
@@ -9,6 +9,6 @@ export const RightSidePanelContent = () => {
     case "team-member":
       return <div>TODO: render the team members stuff</div>;
     default:
-      return <GeneralTeamsInformation />;
+      return <TeamsDetails />;
   }
 };

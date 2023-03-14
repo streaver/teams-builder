@@ -2,10 +2,10 @@ import { clientIdsAtom } from "@/state/recoil/atoms/clientIdsAtom";
 import { teamMembersByWorkingHoursSelectorFamily } from "@/state/recoil/selectors/teamMembersByWorkingHoursSelectorFamily";
 import { WorkingHours } from "@/utils/team-members-utils";
 import { useRecoilValue } from "recoil";
-import { BenchInfo } from "./BenchInfo";
-import { ClientTeamsInfo } from "./ClientTeamsInfo";
+import { BenchDetails } from "./BenchSize";
+import { ClientTeamsSummary } from "./ClientTeamsCount";
 
-export const GeneralTeamsInformation = () => {
+export const TeamsDetails = () => {
   const fullTimeMembers = useRecoilValue(
     teamMembersByWorkingHoursSelectorFamily(WorkingHours.FULL_TIME)
   );
@@ -36,11 +36,11 @@ export const GeneralTeamsInformation = () => {
         </p>
       </div>
       <div className="flex flex-col items-center gap-4 pt-4">
-        <BenchInfo />
+        <BenchDetails />
         <div className="flex flex-col gap-2 text-center">
           <p className="font-medium">Clients:</p>
           {clientIds.map((clientId) => (
-            <ClientTeamsInfo key={clientId} id={clientId} />
+            <ClientTeamsSummary key={clientId} id={clientId} />
           ))}
         </div>
       </div>
