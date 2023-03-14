@@ -1,3 +1,4 @@
+import { selectedItemAtom } from "@/state/recoil/atoms/selectedItemAtom";
 import { teamMemberAtomFamily } from "@/state/recoil/atoms/teamMemberAtomFamily";
 import { teamColorSelectorFamily } from "@/state/recoil/selectors/teamColorSelectorFamily";
 import { TeamMember } from "@/types/Team";
@@ -9,7 +10,8 @@ import {
   QUART_TIME_MEMBER_HEIGHT,
 } from "@/utils/constants";
 import { WorkingHours } from "@/utils/team-members-utils";
-import { useRecoilValue } from "recoil";
+import React from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import tinycolor from "tinycolor2";
 import { TeamMemberAvatar } from "./avatar/TeamMemberAvatar";
 
@@ -24,6 +26,8 @@ const WORKINGHOURS_HEIGHT = {
 };
 
 export const TeamMemberBox = ({ id }: Props) => {
+  const setSelectedItem = useSetRecoilState(selectedItemAtom);
+
   const member = useRecoilValue(teamMemberAtomFamily(id));
   const height = WORKINGHOURS_HEIGHT[member.hours];
 
@@ -32,6 +36,14 @@ export const TeamMemberBox = ({ id }: Props) => {
   const teamColorWithTransparency = tinycolor(teamColor)
     .setAlpha(0.15)
     .toRgbString();
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Prevents the event bubbling
+    // We don't want the team box to be clicked, other wise it would override the selection.
+    e.stopPropagation();
+
+    setSelectedItem({ id, type: "team-member" });
+  };
 
   return (
     <div
@@ -43,6 +55,7 @@ export const TeamMemberBox = ({ id }: Props) => {
         backgroundColor: teamColorWithTransparency,
         borderColor: teamColor,
       }}
+      onClick={handleClick}
     >
       <TeamMemberAvatar id={id} />
     </div>
