@@ -73,7 +73,7 @@ const InfiniteCanvas = () => {
 
   return (
     <div
-      className="relative w-full h-full overflow-hidden border-2 border-dashed bg-dam-blue-400 bg-opacity-[15%] border-dam-blue-400 overscroll-none"
+      className="relative w-full h-full overflow-hidden border-2 border-dashed bg-dam-blue-400 bg-opacity-[15%] border-dam-blue-400 overscroll-none rounded-3xl"
       ref={mergeRefs([canvasRef, teamDropRef, teamMemberDropRef])}
       onPointerMove={handlePointer}
     >

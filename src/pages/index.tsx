@@ -1,3 +1,4 @@
+import { RightSidePanel } from "@/components/right-side-panel/RightSidePanel";
 import { AUTHENTICATION_COOKIE_NAME } from "@/pages/api/sign-in";
 import { RecoilProvider } from "@/providers/RecoilProvider";
 import { GetServerSideProps } from "next";
@@ -33,7 +34,7 @@ export default function Home() {
         <div className="flex w-full h-full">
           <DndProvider backend={HTML5Backend}>
             <DynamicInfiniteCanvas />
-            <div className="w-1/5 shrink-0" />
+            <RightSidePanel />
             <DynamicBench />
           </DndProvider>
         </div>
