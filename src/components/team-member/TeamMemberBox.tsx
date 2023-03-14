@@ -27,6 +27,9 @@ const WORKINGHOURS_HEIGHT = {
   [WorkingHours.QUART_TIME]: QUART_TIME_MEMBER_HEIGHT,
 };
 
+const TEAM_MEMBER_CLASSNAME = "team-member";
+export const TEAM_MEMBER_SELECTOR = `.${TEAM_MEMBER_CLASSNAME}`;
+
 export const TeamMemberBox = ({ id }: Props) => {
   const setSelectedItem = useSetRecoilState(selectedItemAtom);
   const isSelected = useRecoilValue(isTeamMemberSelectedSelectorFamily(id));
@@ -50,10 +53,14 @@ export const TeamMemberBox = ({ id }: Props) => {
 
   return (
     <div
-      className={classNames("flex flex-col items-center py-0.5 rounded-3xl", {
-        "border-dashed": !isSelected,
-        "border-solid": isSelected,
-      })}
+      className={classNames(
+        TEAM_MEMBER_CLASSNAME,
+        "cursor-pointer flex flex-col items-center py-0.5 rounded-3xl",
+        {
+          "border-dashed": !isSelected,
+          "border-solid": isSelected,
+        }
+      )}
       style={{
         width: MEMBER_WIDTH,
         height,
